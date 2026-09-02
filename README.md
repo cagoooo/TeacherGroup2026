@@ -18,4 +18,6 @@
 
 ## 網站圖示與社群分享
 
-`assets/` 已包含 favicon、Apple Touch icon、Android maskable icon 與 1200×630 的 `og-image.png`。`index.html` 使用 GitHub Pages 的絕對 OG 圖網址，並附 `?v=2026-09-02` 版本參數；日後替換 OG 圖時，請同步更新該參數，協助 LINE、Facebook 重新抓取新版預覽。
+`assets/` 已包含 favicon、Apple Touch icon、Android maskable icon 與 1200×630 的 `og-image.png`。`index.html` 使用 GitHub Pages 的絕對 OG 圖網址，並附版本參數；日後替換 OG 圖時，請同步更新該參數，協助 LINE、Facebook 重新抓取新版預覽。
+
+網站已加入 Service Worker 版本更新提示：新版會先在背景下載，使用者按下「立即更新」後才套用並重新整理。日後部署內容更新前，請執行 `powershell -ExecutionPolicy Bypass -File scripts/bump-version.ps1 -Notes "更新說明"`，同步提升 `version.json`、`sw.js`、`index.html` 與資源版本字串。

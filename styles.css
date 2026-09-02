@@ -38,6 +38,18 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 .skip-link { position: fixed; z-index: 100; top: 8px; left: 8px; padding: 8px 12px; background: #fff; transform: translateY(-200%); }
 .skip-link:focus { transform: translateY(0); }
 
+.sw-update-toast { position: fixed; z-index: 100; left: 50%; bottom: 18px; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 16px; width: min(440px, calc(100vw - 28px)); padding: 15px 15px 15px 18px; border: 1px solid rgba(255,255,255,0.14); border-radius: 18px; color: #fff; background: #17233a; box-shadow: 0 22px 50px rgba(15,23,42,0.34); transform: translateX(-50%); }
+.sw-update-copy { min-width: 0; }
+.sw-update-title, .sw-update-description { display: block; }
+.sw-update-title { font-size: 0.98rem; line-height: 1.35; }
+.sw-update-description { margin-top: 3px; color: rgba(255,255,255,0.74); font-size: 0.79rem; line-height: 1.5; }
+.sw-update-actions { display: flex; align-items: center; gap: 7px; white-space: nowrap; }
+.sw-update-button, .sw-update-dismiss { border: 0; border-radius: 11px; padding: 9px 13px; font: inherit; font-size: 0.84rem; font-weight: 900; cursor: pointer; }
+.sw-update-button { color: var(--navy-900); background: var(--gold-500); }
+.sw-update-button:hover { background: #ffd266; }
+.sw-update-dismiss { padding-inline: 6px; color: rgba(255,255,255,0.72); background: transparent; }
+.sw-update-dismiss:hover { color: #fff; }
+
 .top-notice { background: var(--gold-500); color: #203047; font-weight: 800; font-size: 0.94rem; }
 .notice-inner { min-height: 38px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
 .notice-inner a { text-underline-offset: 3px; }
@@ -204,4 +216,7 @@ details a { color: var(--navy-800); font-weight: 800; }
   .contact-band { padding: 46px 0; }
   .contact-actions { width: 100%; }
   .contact-actions a { width: 100%; justify-content: center; }
+  .sw-update-toast { grid-template-columns: 1fr; gap: 10px; padding: 15px 16px; }
+  .sw-update-actions { justify-content: stretch; }
+  .sw-update-button { flex: 1; }
 }
