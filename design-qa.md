@@ -8,6 +8,7 @@
 - Desktop CSS viewport: 1440 × 1024; rendered screenshot: `qa/desktop.png` (1425 × 1013)
 - Mobile CSS viewport: 390 × 844; rendered screenshot: `qa/mobile-top.png` (375 × 812)
 - Full desktop capture: `qa/desktop-full.png` (1425 × 4050)
+- Public GitHub Pages capture: `qa/live-desktop.png` (1425 × 1013) at `https://cagoooo.github.io/TeacherGroup2026/`
 - Same-input comparison: `qa/comparison-hero.png` (1482 × 720), containing the source poster at left and the desktop website hero at right. The comparison normalizes both images to 700 px tall; the source is 467 × 700 and the implementation is 984 × 700 within that canvas.
 
 ## Scope and intentional adaptation
@@ -42,6 +43,7 @@ No actionable P0, P1, or P2 findings remain.
 - FAQ disclosure opens correctly.
 - Online application links resolve to `https://www.teu.org.tw/google_form.php`; live HTTP check returned 200.
 - Official union website live HTTP check returned 200.
+- GitHub Pages public site returned HTTP 200 for both `/` and `/styles.css`; the browser-rendered public page has the correct title, visible hero, form URL, and no console errors.
 
 ## Follow-up polish
 
