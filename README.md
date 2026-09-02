@@ -15,3 +15,7 @@
 年度、費用、匯款帳戶、聯絡資訊與官方連結集中於 `site-data.js`；更新年度活動時，先以工會最新正式文件核對，再修改該檔與相應文案。
 
 本 repository 不收錄含收件人資料的原始公文，也不在網站蒐集會員個資；新進會員資料一律導向工會官方線上申請表。
+
+## 網站圖示與社群分享
+
+`assets/` 已包含 favicon、Apple Touch icon、Android maskable icon 與 1200×630 的 `og-image.png`。`index.html` 使用 GitHub Pages 的絕對 OG 圖網址，並附 `?v=2026-09-02` 版本參數；日後替換 OG 圖時，請同步更新該參數，協助 LINE、Facebook 重新抓取新版預覽。
