@@ -21,7 +21,9 @@ $versionData = [ordered]@{
   version = $version
   notes = $Notes
 }
-[System.IO.File]::WriteAllText($versionPath, ($versionData | ConvertTo-Json), $encoding)
+$versionJson = ($versionData | ConvertTo-Json) -replace "`r`n", "`n"
+$versionJson = $versionJson -replace '(?m)^ {4}', '  '
+[System.IO.File]::WriteAllText($versionPath, ($versionJson.TrimEnd() + "`n"), $encoding)
 
 $swPath = Join-Path $root "sw.js"
 $sw = [System.IO.File]::ReadAllText($swPath, [System.Text.Encoding]::UTF8)
