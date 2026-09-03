@@ -24,6 +24,7 @@ $versionData = [ordered]@{
 }
 $versionJson = ($versionData | ConvertTo-Json) -replace "`r`n", "`n"
 $versionJson = $versionJson -replace '(?m)^ {4}', '  '
+$versionJson = $versionJson -replace '(?m)^(\s*"[^"]+":)\s+', '$1 '
 [System.IO.File]::WriteAllText($versionPath, ($versionJson.TrimEnd() + "`n"), $encoding)
 
 $swPath = Join-Path $root "sw.js"
