@@ -149,12 +149,15 @@ h3 { line-height: 1.42; }
 .account-card { padding: 35px; border-top: 6px solid var(--red-700); border-radius: var(--radius-lg); color: #fff; background: var(--navy-900); box-shadow: var(--shadow); }
 .account-card > p:first-child { margin-bottom: 6px; color: #cbdcff; font-size: 0.83rem; font-weight: 900; letter-spacing: 0.09em; }
 .account-card h3 { margin-bottom: 20px; font-size: 1.42rem; }
+.account-intro { margin: 0 0 20px; padding: 11px 12px; border: 1px solid rgba(255,255,255,0.24); border-radius: 11px; color: #f3f7ff; background: rgba(255,255,255,0.08); font-size: 0.89rem; }
 .account-card dl { margin: 0 0 18px; }
 .account-card dl div { padding: 12px 0; border-top: 1px solid rgba(255,255,255,0.22); }
 .account-card dt { color: #cbdcff; font-size: 0.86rem; }
 .account-card dd { margin: 3px 0 0; font-family: ui-monospace, "Cascadia Mono", monospace; font-size: 1.28rem; font-weight: 900; letter-spacing: 0.04em; }
 .account-note { display: flex; gap: 8px; margin-bottom: 22px; color: #f3f7ff; font-size: 0.89rem; }
 .account-note i { color: var(--gold-500); }
+.account-alert { display: flex; gap: 8px; align-items: flex-start; margin: 0; padding: 11px 12px; border-radius: 11px; color: var(--navy-900); background: var(--gold-500); font-size: 0.88rem; font-weight: 900; line-height: 1.5; }
+.account-alert i { flex: 0 0 auto; margin-top: 3px; }
 .account-card .button { width: 100%; color: var(--navy-900); background: var(--gold-500); }
 
 .faq-layout { display: grid; grid-template-columns: minmax(240px, 0.42fr) minmax(0, 1fr); gap: 60px; }

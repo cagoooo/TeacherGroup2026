@@ -1,4 +1,4 @@
-const BUILD_VERSION = '2026.09.02-3';
+const BUILD_VERSION = '2026.09.03-4';
 const CACHE_NAME = `teachergroup-${BUILD_VERSION}`;
 const PRECACHE_ASSETS = [
   `./styles.css?v=${BUILD_VERSION}`,

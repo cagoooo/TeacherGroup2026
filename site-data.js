@@ -12,7 +12,6 @@ window.SITE_CONFIG = Object.freeze({
   phone: "03-458-3860",
   fax: "03-458-3672",
   email: "teuniontw@gmail.com",
-  formUrl: "https://www.teu.org.tw/google_form.php",
   officialWebsite: "https://www.teu.org.tw/",
   emailLink: "mailto:teuniontw@gmail.com"
 });

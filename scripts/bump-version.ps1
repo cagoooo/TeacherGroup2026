@@ -10,7 +10,8 @@ $today = Get-Date -Format "yyyy.MM.dd"
 $sequence = 1
 
 if (Test-Path -LiteralPath $versionPath) {
-  $oldVersion = (Get-Content -Raw -LiteralPath $versionPath | ConvertFrom-Json).version
+  $versionText = [System.IO.File]::ReadAllText($versionPath, [System.Text.Encoding]::UTF8)
+  $oldVersion = ($versionText | ConvertFrom-Json).version
   if ($oldVersion -match "^$([regex]::Escape($today))-(\d+)$") {
     $sequence = [int]$Matches[1] + 1
   }
