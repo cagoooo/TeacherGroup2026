@@ -1,5 +1,7 @@
 # TeacherGroup2026
 
+> 📌 **建置版本：2026.09.03-7**（依據 `version.json`）
+
 桃園市教育產業工會石門國小支會的 116 年度會員服務暨活動宣導靜態網站。
 
 🌐 **線上網站**：https://cagoooo.github.io/TeacherGroup2026/
