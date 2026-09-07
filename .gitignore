@@ -1,4 +1,9 @@
-qa/*.png
-qa/*.html
-qa/audit/
-assets/*-source.png
+node_modules/
+npm-debug.log*
+scripts/fonts/NotoSansTC-Bold.ttf
+scripts/fonts/NotoSansTC-Subset.ttf
+
+# 本機視覺驗證截圖與社群圖產製來源，不部署至 GitHub Pages
+qa/
+assets/favicon-source.png
+assets/og-background-source.png

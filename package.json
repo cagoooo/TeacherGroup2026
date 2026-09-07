@@ -1,0 +1,13 @@
+{
+  "name": "teachergroup2026",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "check:site": "node scripts/check-site.mjs",
+    "generate:og": "node scripts/generate-og-image.mjs"
+  },
+  "devDependencies": {
+    "@napi-rs/canvas": "1.0.8"
+  }
+}

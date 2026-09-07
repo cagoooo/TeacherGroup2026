@@ -1,6 +1,6 @@
 # TeacherGroup2026
 
-> 📌 **建置版本：2026.09.07-2**（依據 `version.json`）
+> 📌 **建置版本：2026.09.08-1**（依據 `version.json`）
 
 桃園市教育產業工會石門國小支會的 116 年度會員服務暨活動宣導靜態網站。
 
@@ -27,8 +27,10 @@
 
 `assets/` 已包含 favicon、Apple Touch icon、Android maskable icon 與 1200×630 的 `og-image.png`。`index.html` 使用 GitHub Pages 的絕對 OG 圖網址，並附版本參數；日後替換 OG 圖時，請同步更新該參數，協助 LINE、Facebook 重新抓取新版預覽。
 
+社群分享圖可用 `npm run generate:og` 依目前素材與 `site-data.js` 重新產製；`npm run check:site` 會檢查 PNG 格式、1200×630 尺寸、1,200＋300＝1,500 元文字、OG 版本參數與禁止回歸文案。兩項檢查也已納入 GitHub Actions 的 `site-check` workflow。
+
 網站已加入 Service Worker 版本更新提示：新版會先在背景下載，使用者按下「立即更新」後才套用並重新整理。日後部署內容更新前，請執行 `powershell -ExecutionPolicy Bypass -File scripts/bump-version.ps1 -Notes "更新說明"`，同步提升 `version.json`、`sw.js`、`index.html` 與資源版本字串。
 
 ## 專案進度與未來規劃
 
-目前完成項目、P0／P1 狀態、開放問題與後續候選功能，請參閱 [`PROJECT-PROGRESS.md`](PROJECT-PROGRESS.md)。本輪 RDQ 規劃規格卡位於 [`rdq/RDQ-spec-teachergroup-roadmap-20260908.md`](rdq/RDQ-spec-teachergroup-roadmap-20260908.md)，會長選定候選編號後再進入下一階段開發。
+目前完成項目、P0／P1 狀態、開放問題與後續候選功能，請參閱 [`PROJECT-PROGRESS.md`](PROJECT-PROGRESS.md)。本輪 RDQ 規格卡位於 [`rdq/RDQ-spec-teachergroup-roadmap-20260908.md`](rdq/RDQ-spec-teachergroup-roadmap-20260908.md)；會長已選定 ROADMAP-01、02、03、05、09，已完成第一階段的靜態網站實作與驗收護欄。

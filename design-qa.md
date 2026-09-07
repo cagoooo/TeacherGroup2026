@@ -46,12 +46,15 @@ The workshop section is grounded in `活動宣導內容\3\公文內容.pdf` and 
   - Fix: 新增「115 年度學校多元研習」專區，將電影欣賞、學習共同體進階、蜜蜂生態與造型黏土 DIY 分成三張資訊卡；電影研習保留 Google 表單按鈕，另外兩場以研習系統課程編號提示報名。
   - Post-fix evidence: 三張卡片均顯示日期、時間、地點、對象／名額、研習時數與報名截止資訊，且不虛構未提供的研習系統網址。
 
-- [P1, open] 社群分享圖的費用視覺尚未同步本次 1,500 元收費明細。
-  - Evidence: `assets/og-image.png` 仍是先前「年度會費 1,200 元」版本；首頁 `og:description` 與頁面正文已呈現 1,200 元＋300 元＝1,500 元。
-  - Constraint: 本次圖片產製工具回報使用額度已達上限，因此沒有以未驗證方式覆寫既有 PNG。
-  - Next step: 產製「工會會費／入會費 1,200 元＋校內康樂費 300 元＝本次合計 1,500 元」新版 1200×630 圖，更新 `og:image` 版本參數後重新檢查 LINE／Facebook 預覽。
+- [P1, fixed] 社群分享圖的費用視覺已同步本次 1,500 元收費明細。
+  - Fix: 以 `scripts/generate-og-image.mjs` 搭配本機繁中文字型重新產製 `assets/og-image.png`，明確呈現「工會會費／入會費 1,200 元＋校內康樂費 300 元＝1,500 元」。
+  - Post-fix evidence: 檔案為真正 PNG，尺寸 1200×630、檔案大小約 581 KB；`index.html` 的 `og:image`、`secure_url` 與 Twitter image 均使用 `v=2026.09.08-1`，`npm run check:site` 通過。
 
-目前沒有已知的 P0；有 1 項開放 P1（社群分享圖），其餘 P1／P2 發現均已修正並部署。
+- [P2, fixed] 發布前內容、版本與第一階段無障礙護欄已自動化。
+  - Fix: 新增 `scripts/check-site.mjs` 與 `.github/workflows/site-check.yml`，檢查 1,200＋300＝1,500 元、角色分工、錯誤校名、舊名冊說明、版本一致性、OG 圖格式、頁內連結、語系、viewport、skip link、main landmark、h1、圖片替代文字、focus-visible 與手機斷點。
+  - Post-fix evidence: 本機 `npm run check:site` 通過；GitHub Actions 會在 push／pull request 執行相同檢查。
+
+目前沒有已知的 P0、P1 或 P2 開放發現；ROADMAP-09 的完整瀏覽器 screenshot／Lighthouse 自動化仍是可選的第二階段，不是目前公開版本的阻塞問題。
 
 ## Fidelity surfaces
 

@@ -1,3 +1,126 @@
+const activityScheduleData = Object.freeze([
+  {
+    time: "8:30–9:00",
+    datetime: "2026-10-03T08:30:00+08:00",
+    title: "報到",
+    description: "於龜殼劇場近停車場處核對會員身分，領取集章卡（限本會會員）。"
+  },
+  {
+    time: "9:00–11:00",
+    datetime: "2026-10-03T09:00:00+08:00",
+    title: "健行集章",
+    description: "依序走訪受信遺跡、榕樹聚落、客家工藝館三個集章點。"
+  },
+  {
+    time: "10:30–11:30",
+    datetime: "2026-10-03T10:30:00+08:00",
+    title: "兌換禮品",
+    description: "憑集章卡兌換伴手禮，10:30 起兌換，11:30 截止。"
+  },
+  {
+    time: "11:00–11:30",
+    datetime: "2026-10-03T11:00:00+08:00",
+    title: "快樂賦歸",
+    description: "活動結束，請協助維護場地與沿途環境整潔。"
+  }
+]);
+
+const activityReminderData = Object.freeze([
+  { text: "錄取名單預計於 9 月 18 日前公告於工會官網「最新消息」或 Facebook 粉絲專頁，並發送簡訊通知。" },
+  { deadlineKey: "activityCancelDeadline", emailKey: "email", textBefore: "因故無法參加，請於", textAfter: "寄信至", textEnd: "，以利依序遞補。" },
+  { text: "活動不開放現場候補或臨時報名；當天請攜帶會員卡或身分證件辦理報到。" },
+  { text: "請自備水瓶，穿著舒適服裝、球鞋與遮陽衣物，並準備健保卡、個人藥品及防蚊用品。" },
+  { text: "未請假缺席者，未來 4 個月內不得參加本會任何研習及活動；攜幼童者請全程注意孩童安全。" }
+]);
+
+const workshopData = Object.freeze([
+  {
+    id: "film",
+    cardClass: "workshop-card-film",
+    month: "SEP",
+    day: "24",
+    weekday: "週四",
+    ariaDate: "9月24日",
+    tag: "電影欣賞・映後交流",
+    title: "光影中的教育思辨：《野獸之心》",
+    intro: "從人在極端處境中的韌性、創傷修復與生命選擇出發，連結生命教育、情意教育、動物倫理與媒體素養。",
+    datetime: "2026-09-24T18:20:00+08:00",
+    time: "115 年 9 月 24 日（星期四）18:20 報到；19:00 放映",
+    venue: "星橋國際影城（桃園市中壢區中園路二段 501 號—大江購物中心）",
+    audienceLabel: "對象",
+    audience: "限桃園市教師；主、協辦單位會員優先，每位會員可帶 1 名眷屬",
+    hours: "2 小時",
+    registrationMode: "form",
+    registrationUrl: "https://forms.gle/SupkcaojeeJzPb4RA",
+    registrationLabel: "前往 Google 表單",
+    registrationWindow: "9/7（一）12:30～9/11（五）16:00",
+    registrationNote: "止，額滿即關閉；錄取後再依通知至研習系統完成報名。"
+  },
+  {
+    id: "community",
+    cardClass: "workshop-card-community",
+    month: "OCT",
+    day: "03",
+    weekday: "週六",
+    ariaDate: "10月3日",
+    tag: "學習共同體・共備實作",
+    title: "學習共同體進階：從共備到課堂實踐",
+    intro: "深化教材研讀、學習證據分析與課堂設計，透過案例剖析、分組共備及成果分享，將共備成果落實於課堂。",
+    datetime: "2026-10-03T09:00:00+08:00",
+    time: "115 年 10 月 3 日（星期六）上午 9:00～下午 4:30",
+    venue: "桃園市蘆竹區大華國民小學圖書館（桃園市蘆竹區大華街 98 號）",
+    audienceLabel: "名額",
+    audience: "限額 30 位；曾參加學習共同體基礎研習者優先",
+    hours: "8 小時",
+    registrationMode: "course",
+    courseCode: "Z00002-260800001",
+    registrationWindow: "即日起～9/29（二）16:00",
+    registrationNote: "止，請至桃園市教師研習系統以課程編號報名。"
+  },
+  {
+    id: "bee",
+    cardClass: "workshop-card-bee",
+    month: "OCT",
+    day: "17",
+    weekday: "週六",
+    ariaDate: "10月17日",
+    tag: "生態教育・造型黏土 DIY",
+    title: "蜂與自然：蜜蜂生態教育暨造型黏土 DIY",
+    intro: "認識蜜蜂生態、授粉與蜜源植物，走進蜂園觀察，再以造型黏土創作延伸自然與藝術課程。",
+    datetime: "2026-10-17T13:00:00+08:00",
+    time: "115 年 10 月 17 日（星期六）下午 1:00～4:30",
+    venue: "驛品香生態農園（桃園市楊梅區永寧里 1 鄰校前路 1150 號）",
+    audienceLabel: "名額",
+    audience: "本市教師；主、協辦單位會員優先，限額 30 位",
+    hours: "4 小時",
+    registrationMode: "course",
+    courseCode: "Z00002-260900001",
+    registrationWindow: "即日起～10/8（四）16:00",
+    registrationNote: "止，請至桃園市教師研習系統以課程編號報名。"
+  }
+]);
+
+const workshopFieldMap = Object.freeze({
+  workshopFilmTitle: workshopData[0].title,
+  workshopFilmTime: workshopData[0].time,
+  workshopFilmVenue: workshopData[0].venue,
+  workshopFilmHours: workshopData[0].hours,
+  workshopFilmRegistrationWindow: workshopData[0].registrationWindow,
+  workshopFilmRegistrationUrl: workshopData[0].registrationUrl,
+  workshopCommunityTitle: workshopData[1].title,
+  workshopCommunityTime: workshopData[1].time,
+  workshopCommunityVenue: workshopData[1].venue,
+  workshopCommunityHours: workshopData[1].hours,
+  workshopCommunityCourseCode: workshopData[1].courseCode,
+  workshopCommunityRegistrationWindow: workshopData[1].registrationWindow,
+  workshopBeeTitle: workshopData[2].title,
+  workshopBeeTime: workshopData[2].time,
+  workshopBeeVenue: workshopData[2].venue,
+  workshopBeeHours: workshopData[2].hours,
+  workshopBeeCourseCode: workshopData[2].courseCode,
+  workshopBeeRegistrationWindow: workshopData[2].registrationWindow
+});
+
 window.SITE_CONFIG = Object.freeze({
   campaignYear: "115",
   membershipYear: "116",
@@ -30,27 +153,13 @@ window.SITE_CONFIG = Object.freeze({
   activityRegistrationUrl: "https://reurl.cc/Ym4k44",
   activityInfoUrl: "https://reurl.cc/OQYEp7",
   activityCancelDeadline: "9/21（一）前",
+  activitySchedule: activityScheduleData,
+  activityReminders: activityReminderData,
+  workshops: workshopData,
   workshopTitle: "115 年度學校多元研習",
   workshopAnnouncementLabel: "9、10 月學校多元研習",
   workshopAnnouncementDate: "115 年 9 月 4 日公文",
-  workshopFilmTitle: "光影中的教育思辨：《野獸之心》",
-  workshopFilmTime: "115 年 9 月 24 日（星期四）18:20 報到；19:00 放映",
-  workshopFilmVenue: "星橋國際影城（桃園市中壢區中園路二段 501 號—大江購物中心）",
-  workshopFilmHours: "2 小時",
-  workshopFilmRegistrationWindow: "9/7（一）12:30～9/11（五）16:00",
-  workshopFilmRegistrationUrl: "https://forms.gle/SupkcaojeeJzPb4RA",
-  workshopCommunityTitle: "學習共同體進階：從共備到課堂實踐",
-  workshopCommunityTime: "115 年 10 月 3 日（星期六）上午 9:00～下午 4:30",
-  workshopCommunityVenue: "桃園市蘆竹區大華國民小學圖書館（桃園市蘆竹區大華街 98 號）",
-  workshopCommunityHours: "8 小時",
-  workshopCommunityCourseCode: "Z00002-260800001",
-  workshopCommunityRegistrationWindow: "即日起～9/29（二）16:00",
-  workshopBeeTitle: "蜂與自然：蜜蜂生態教育暨造型黏土 DIY",
-  workshopBeeTime: "115 年 10 月 17 日（星期六）下午 1:00～4:30",
-  workshopBeeVenue: "驛品香生態農園（桃園市楊梅區永寧里 1 鄰校前路 1150 號）",
-  workshopBeeHours: "4 小時",
-  workshopBeeCourseCode: "Z00002-260900001",
-  workshopBeeRegistrationWindow: "即日起～10/8（四）16:00",
+  ...workshopFieldMap,
   officialWebsite: "https://www.teu.org.tw/",
   emailLink: "mailto:teuniontw@gmail.com"
 });

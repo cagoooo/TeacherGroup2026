@@ -1,0 +1,21 @@
+name: TeacherGroup2026 site checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 下載專案
+        uses: actions/checkout@v4
+      - name: 設定 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: 執行網站防呆檢查
+        run: npm run check:site
