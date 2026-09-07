@@ -109,6 +109,7 @@ h3 { line-height: 1.42; }
 .section-cream { background: var(--cream); }
 .activity-section { background: var(--paper); }
 .activity-heading { max-width: 800px; }
+.section-link { display: inline-flex; align-items: center; gap: 5px; margin-top: 12px; color: var(--navy-800); font-weight: 900; text-underline-offset: 4px; }
 .activity-feature { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(310px, 0.8fr); gap: 20px; align-items: stretch; }
 .activity-spotlight { padding: 36px; border-radius: var(--radius-lg); color: #fff; background: var(--navy-900); box-shadow: var(--shadow); }
 .activity-kicker { margin-bottom: 9px; color: var(--gold-500); font-size: 0.85rem; font-weight: 900; letter-spacing: 0.08em; }
@@ -162,6 +163,43 @@ h3 { line-height: 1.42; }
 .activity-checklist strong, .activity-checklist a { color: var(--navy-800); font-weight: 900; }
 .activity-weather-note { display: flex; gap: 10px; align-items: flex-start; margin-top: 20px; padding: 15px 17px; border-left: 4px solid var(--gold-500); border-radius: 0 12px 12px 0; color: var(--muted); background: #fff7d9; font-size: 0.88rem; line-height: 1.55; }
 .activity-weather-note i { flex: 0 0 auto; margin-top: 4px; color: #c77c00; }
+.workshop-section { background: var(--cream); border-top: 1px solid #f0e7d5; }
+.workshop-heading { max-width: 840px; }
+.workshop-notice { display: flex; gap: 11px; align-items: flex-start; margin: 0 0 24px; padding: 16px 18px; border-left: 4px solid var(--navy-800); border-radius: 0 13px 13px 0; color: var(--muted); background: #fff; box-shadow: 0 6px 16px rgba(20, 62, 123, 0.05); }
+.workshop-notice i { flex: 0 0 auto; margin-top: 4px; color: var(--navy-800); }
+.workshop-notice p { margin: 0; font-size: 0.9rem; line-height: 1.6; }
+.workshop-notice strong { color: var(--navy-900); }
+.workshop-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; align-items: stretch; }
+.workshop-card { display: flex; min-width: 0; flex-direction: column; padding: 25px; border: 1px solid var(--line); border-top: 5px solid var(--navy-800); border-radius: var(--radius-md); background: #fff; box-shadow: 0 8px 18px rgba(20, 62, 123, 0.06); }
+.workshop-card-film { border-top-color: var(--red-700); }
+.workshop-card-community { border-top-color: var(--navy-800); }
+.workshop-card-bee { border-top-color: var(--green-800); }
+.workshop-card-header { display: grid; grid-template-columns: 66px minmax(0, 1fr); gap: 14px; align-items: start; min-height: 96px; }
+.workshop-date { display: grid; place-items: center; align-content: center; width: 66px; min-height: 82px; border-radius: 15px; color: #fff; background: var(--navy-900); line-height: 1; }
+.workshop-card-film .workshop-date { background: var(--red-700); }
+.workshop-card-bee .workshop-date { background: var(--green-900); }
+.workshop-date span { font-size: 0.7rem; font-weight: 900; letter-spacing: 0.08em; }
+.workshop-date strong { margin: 4px 0 2px; font-size: 1.85rem; letter-spacing: -0.04em; }
+.workshop-date small { font-size: 0.73rem; font-weight: 800; }
+.workshop-tag { margin-bottom: 5px; color: var(--muted); font-size: 0.76rem; font-weight: 900; letter-spacing: 0.04em; }
+.workshop-card h3 { margin-bottom: 0; color: var(--navy-900); font-size: 1.22rem; line-height: 1.45; }
+.workshop-card-intro { min-height: 99px; margin: 17px 0 20px; color: var(--muted); font-size: 0.9rem; line-height: 1.65; }
+.workshop-meta { display: grid; gap: 12px; margin: 0; padding-top: 18px; border-top: 1px solid var(--line); }
+.workshop-meta > div { display: grid; grid-template-columns: 70px minmax(0, 1fr); gap: 9px; align-items: start; }
+.workshop-meta dt { color: var(--muted); font-size: 0.78rem; font-weight: 900; }
+.workshop-meta dt i { margin-right: 3px; color: var(--navy-800); }
+.workshop-meta dd { min-width: 0; margin: 0; color: var(--ink); font-size: 0.86rem; line-height: 1.5; overflow-wrap: anywhere; }
+.workshop-meta dd strong { color: var(--red-700); font-size: 1rem; }
+.workshop-card-footer { display: grid; gap: 12px; margin-top: auto; padding-top: 22px; }
+.workshop-card-footer .button { width: 100%; }
+.workshop-registration-note { display: flex; gap: 7px; align-items: flex-start; margin: 0; color: var(--muted); font-size: 0.78rem; line-height: 1.55; }
+.workshop-registration-note > i { flex: 0 0 auto; margin-top: 4px; color: var(--red-700); }
+.workshop-registration-note strong { color: var(--navy-800); }
+.workshop-course-code { display: grid; gap: 2px; padding: 11px 12px; border-radius: 10px; color: var(--navy-900); background: var(--navy-100); }
+.workshop-course-code span { font-size: 0.72rem; font-weight: 800; }
+.workshop-course-code strong { font-family: ui-monospace, "Cascadia Mono", monospace; font-size: 0.95rem; letter-spacing: 0.02em; overflow-wrap: anywhere; }
+.workshop-source-note { display: flex; gap: 8px; align-items: flex-start; margin: 24px 0 0; color: var(--muted); font-size: 0.8rem; line-height: 1.55; }
+.workshop-source-note i { flex: 0 0 auto; margin-top: 4px; color: var(--navy-800); }
 .deadline-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
 .deadline-card { position: relative; min-height: 340px; padding: 32px; border: 1px solid #c7d7ef; border-radius: var(--radius-lg); background: #fff; box-shadow: 0 8px 18px rgba(20, 62, 123, 0.06); overflow: hidden; }
 .deadline-card-highlight { border: 2px solid var(--navy-800); }
@@ -250,6 +288,7 @@ details a { color: var(--navy-800); font-weight: 800; }
   .nav-cta { margin-top: 6px; padding: 11px !important; text-align: center; }
   .hero { padding: 56px 0 62px; }
   .hero-layout, .joining-layout, .payment-layout, .faq-layout, .activity-feature, .activity-detail-grid { grid-template-columns: 1fr; gap: 30px; }
+  .workshop-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .hero-summary { max-width: 540px; }
   .membership-grid { grid-template-columns: 1fr; }
   .faq-layout .section-heading { margin-bottom: 0; }
@@ -273,6 +312,9 @@ details a { color: var(--navy-800); font-weight: 800; }
   .activity-facts { grid-template-columns: 1fr; }
   .activity-fact-wide { grid-column: auto; }
   .activity-actions .button { width: 100%; }
+  .workshop-grid { grid-template-columns: 1fr; }
+  .workshop-card { padding: 23px; }
+  .workshop-card-intro { min-height: auto; }
   .deadline-grid { grid-template-columns: 1fr; }
   .deadline-card { min-height: auto; padding: 26px; }
   .deadline-card h3 { min-height: auto; }
