@@ -28,3 +28,7 @@
 `assets/` 已包含 favicon、Apple Touch icon、Android maskable icon 與 1200×630 的 `og-image.png`。`index.html` 使用 GitHub Pages 的絕對 OG 圖網址，並附版本參數；日後替換 OG 圖時，請同步更新該參數，協助 LINE、Facebook 重新抓取新版預覽。
 
 網站已加入 Service Worker 版本更新提示：新版會先在背景下載，使用者按下「立即更新」後才套用並重新整理。日後部署內容更新前，請執行 `powershell -ExecutionPolicy Bypass -File scripts/bump-version.ps1 -Notes "更新說明"`，同步提升 `version.json`、`sw.js`、`index.html` 與資源版本字串。
+
+## 專案進度與未來規劃
+
+目前完成項目、P0／P1 狀態、開放問題與後續候選功能，請參閱 [`PROJECT-PROGRESS.md`](PROJECT-PROGRESS.md)。本輪 RDQ 規劃規格卡位於 [`rdq/RDQ-spec-teachergroup-roadmap-20260908.md`](rdq/RDQ-spec-teachergroup-roadmap-20260908.md)，會長選定候選編號後再進入下一階段開發。
