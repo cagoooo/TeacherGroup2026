@@ -4,7 +4,7 @@
 
 - Source visual truth: `G:\Agent\教師會會長要做的事情\152615.jpg`
 - Source pixels: 1024 × 1536
-- Implementation: browser-rendered local static site at `http://127.0.0.1:4174/`
+- Implementation: browser-rendered local static site at `http://127.0.0.1:49215/`
 - Desktop CSS viewport: 1440 × 1024; rendered screenshot: `qa/desktop.png` (1425 × 1013)
 - Mobile CSS viewport: 390 × 844; rendered screenshot: `qa/mobile-top.png` (375 × 812)
 - Full desktop capture: `qa/desktop-full.png` (1425 × 4050)
@@ -31,7 +31,12 @@ The workshop section is grounded in `活動宣導內容\3\公文內容.pdf` and 
 - [P1, fixed] 校內實際收費流程與原先公開文案不一致，可能誤導會員個別匯款或自行填寫官方表單。
   - Fix: 首頁、續會、新進老師、辦理流程、FAQ 與聯絡區統一改為校內支會流程：舊會員將會費交給教師小組成員，由財務長統合後一次匯款；新進及中斷會員洽支會長，由支會長協助入會與後台建檔。
   - Guardrail: 帳戶資訊保留供財務長對帳使用，但明確標示一般會員請勿個別匯款；網站不再提供官方線上入會表單的自助入口。
-  - Post-fix evidence: 桌面與手機畫面均顯示「本校辦理方式」及「免個別匯款，財務長統一匯款」，且頁面未出現官方表單連結。
+  - Post-fix evidence: 桌面與手機畫面均顯示「本校辦理方式」及「免個別匯款，工會款由財務長統一匯款」，且頁面未出現官方表單連結。
+
+- [P1, fixed] 本次收費若只顯示 1,200 元，會漏掉石門國小校內會員專屬康樂費，造成實際收款金額不一致。
+  - Fix: 新增 `recreationFee` 與 `currentCollectionTotal` 資料欄位，並在首頁、續會、新進／中斷會員、校內辦理流程與 FAQ 明確呈現「工會會費／入會費 1,200 元＋校內康樂費 300 元＝本次合計 1,500 元」。
+  - Guardrail: 工會帳戶說明只對應財務長匯入工會的款項，另註明 300 元康樂費依校內通知辦理並留作石門國小支會會員活動使用。
+  - Post-fix evidence: 頁面資料欄位與公開文案均可檢查到 `1,200`、`300`、`1,500` 及「校內會員專屬康樂費」，且移除原先「免收 1,200 元入會費」的易誤解標題。
 
 - [P1, fixed] 新公文活動資訊需要獨立入口，避免與會員續會流程混在一起，也避免遺漏報名期限、名額、流程與活動提醒。
   - Fix: 新增「活動宣導」導覽與獨立專區，分成活動摘要、報名資格、當日流程、出發提醒四個層次，並保留兩個公文指定外部連結。
@@ -49,7 +54,7 @@ No actionable P0, P1, or P2 findings remain.
 - Spacing and layout rhythm: desktop uses open hero space and two-column decision cards; mobile collapses to one column. Both captures show consistent card padding, readable vertical rhythm, and no overlap.
 - Colors and visual tokens: navy is used for renewal and navigation, green for new-member actions, warm yellow for the urgency notice, and red for monetary amounts. Contrast remains strong on cream, white, navy, and green surfaces.
 - Image and icon fidelity: the supplied poster is used only as visual reference and is not republished. The site has no recreated poster illustrations, CSS art, inline SVG, or placeholder imagery. Standard Bootstrap Icons load as a consistent icon library after `document.fonts.ready`.
-- Copy and content: annual fee, deadlines, discounts, transfer account, contact channels, and the supplied secretary message are retained as source references；公開操作文案則以石門國小支會實際代收、統合匯款與後台建檔流程為準。新增活動專區依 115 年 9 月 3 日公文與活動計畫整理，包含報名時間、活動地點、名額、流程、研習時數與注意事項；新增多元研習專區依 115 年 9 月 4 日公文及三份附件計畫整理，包含三場研習的報名期限、課程編號與不同報名方式。116/1/1 的費用例外說明仍保留於 FAQ。
+- Copy and content: annual fee, current collection split (1,200 元工會會費／入會費＋300 元石門國小校內康樂費＝1,500 元), deadlines, discounts, transfer account, contact channels, and the supplied secretary message are retained as source references；公開操作文案則以石門國小支會實際代收、統合匯款與後台建檔流程為準。新增活動專區依 115 年 9 月 3 日公文與活動計畫整理，包含報名時間、活動地點、名額、流程、研習時數與注意事項；新增多元研習專區依 115 年 9 月 4 日公文及三份附件計畫整理，包含三場研習的報名期限、課程編號與不同報名方式。116/1/1 的工會端費用例外說明仍保留於 FAQ，並與校內康樂費分開標示。
 - Responsiveness and accessibility: tested at 1440 × 1024 and 390 × 844. No horizontal overflow was detected. Keyboard focus styles, semantic headings, real buttons, details/summary FAQ controls, a skip link, named navigation, and clear external-link labels are present.
 
 ## Interaction checks

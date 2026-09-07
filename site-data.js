@@ -3,6 +3,8 @@ window.SITE_CONFIG = Object.freeze({
   membershipYear: "116",
   annualFee: "1,200",
   joinFee: "1,200",
+  recreationFee: "300",
+  currentCollectionTotal: "1,500",
   fullFee: "2,400",
   earlyVoucher: "200",
   lateVoucher: "100",
