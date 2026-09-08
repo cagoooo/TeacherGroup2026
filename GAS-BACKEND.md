@@ -13,7 +13,7 @@ Google 試算表只會有：
 
 事件次數是使用量指標，不等同於去重後的老師人數。公開網站仍保留本機統計；中央統計啟用後，前端用 `sendBeacon` 或非阻塞 `fetch` 傳送固定事件，失敗時不影響網站閱讀。
 
-## 第一次建立與部署
+## 第一次建立與部署（目前已完成）
 
 1. 以學校管理帳號登入 CLASP；若 Apps Script API 尚未啟用，先至 <https://script.google.com/home/usersettings> 開啟。
 2. 在 `gas/` 建立或取得 `.clasp.json`（該檔案已加入 `.gitignore`，不可提交）。
@@ -22,6 +22,8 @@ Google 試算表只會有：
 5. 部署後在 Apps Script 編輯器執行一次 `initializeBackend`，完成 Google 試算表建立與首次授權。
 6. 將同一個 `/exec` 網址填入 `site-data.js` 的 `usageAnalytics.endpoint`，並將 `enabled` 設為 `true`。
 7. 執行版本更新、網站檢查與 GitHub Pages 部署。
+
+本專案目前已完成上述啟用流程：Web App 健康檢查回應 HTTP 200、匿名事件 POST 回應 HTTP 200，且已建立私人試算表。後續若變更 GAS 程式，請保留同一個 deployment ID 並依下方「後續更新」流程重新部署。
 
 ## 後續更新
 

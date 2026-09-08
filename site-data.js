@@ -36,8 +36,8 @@ const activityReminderData = Object.freeze([
 const publicSiteUrl = "https://cagoooo.github.io/TeacherGroup2026/";
 
 const usageAnalyticsConfig = Object.freeze({
-  enabled: false,
-  endpoint: "",
+  enabled: true,
+  endpoint: "https://script.google.com/macros/s/AKfycbw4DsIoOtffczTawMQI7Pz9vO47-mWWLHSmNNHrmsXo4lq9BCxgtRxHxahwGl-ssk03/exec",
   provider: "gas-sheets",
   schema: 1,
   scope: "anonymous-aggregate",

@@ -68,7 +68,11 @@ function doPost(e) {
 function initializeBackend() {
   const properties = PropertiesService.getScriptProperties();
   const existingId = properties.getProperty(CONFIG.spreadsheetProperty);
-  if (existingId) return backendInfo_(existingId);
+  if (existingId) {
+    const existingInfo = backendInfo_(existingId);
+    console.log(JSON.stringify(existingInfo));
+    return existingInfo;
+  }
 
   const spreadsheet = SpreadsheetApp.create('TeacherGroup2026｜匿名網站使用統計');
   const summarySheet = spreadsheet.getSheets()[0];
@@ -101,7 +105,9 @@ function initializeBackend() {
   infoSheet.autoResizeColumns(1, 2);
 
   properties.setProperty(CONFIG.spreadsheetProperty, spreadsheet.getId());
-  return backendInfo_(spreadsheet.getId());
+  const info = backendInfo_(spreadsheet.getId());
+  console.log(JSON.stringify(info));
+  return info;
 }
 
 function getBackendStatus() {

@@ -1,7 +1,7 @@
 # TeacherGroup2026｜專案進度表
 
 > 最後更新：2026-09-08（臺灣時間）  
-> 線上版本：`2026.09.08-3`（前端骨架已更新，GAS deployment 尚待完成匿名存取設定）｜GitHub Pages：<https://cagoooo.github.io/TeacherGroup2026/>
+> 線上版本：`2026.09.08-4`（GAS 匿名中央彙整已啟用）｜GitHub Pages：<https://cagoooo.github.io/TeacherGroup2026/>
 > 本輪再依會長選定的 `ROADMAP-07`、`ROADMAP-08`、`ROADMAP-10`、`ROADMAP-11`、`ROADMAP-12` 完成第一階段實作；版本、提交與公開端點以 `version.json`、GitHub `main` 與線上檢查結果為準。
 
 ## 目前狀態摘要
@@ -10,7 +10,7 @@
 | --- | ---: | --- |
 | P0 | 0 項開放 | 沒有阻塞網站公開使用、付款流程或會員資料安全的已知問題。 |
 | P1 | 0 項開放、8 項已完成／第一階段完成 | 收費流程、活動宣導、研習宣導、社群圖與發布防呆均已納入目前版本。 |
-| P2 | 5 項已完成／第一階段完成、1 項後端啟用中 | 手機版可讀性、QR 導覽、公告生命週期、離線備援與匿名統計已建立；GAS＋Google Sheets 中央彙整後端已建立骨架，尚待完成匿名 Web App 存取與首次試算表初始化。 |
+| P2 | 7 項已完成／第一階段完成 | 手機版可讀性、QR 導覽、公告生命週期、離線備援、本機匿名統計與 GAS＋Google Sheets 中央彙整均已建立。 |
 
 ## 已完成項目
 
@@ -21,7 +21,7 @@
 | DONE-03 | P1 | 新增陽光親子 928 健行活動宣導專區。 | 含報名、資格、流程、提醒與公文指定連結。 |
 | DONE-04 | P1 | 新增 115 年 9、10 月學校多元研習專區。 | 三場研習依不同報名方式呈現 Google 表單或課程編號。 |
 | DONE-05 | P2 | 修正手機版期限與提醒文字的換行可讀性。 | 390 px 測試無明顯水平溢位。 |
-| DONE-06 | 支援 | 建立 favicon、PWA manifest、Service Worker 版本更新提示與版本化資源。 | 新版會提示使用者重新整理載入最新內容；目前公開版本為 `2026.09.08-2`。 |
+| DONE-06 | 支援 | 建立 favicon、PWA manifest、Service Worker 版本更新提示與版本化資源。 | 新版會提示使用者重新整理載入最新內容；目前公開版本以 `version.json` 為準。 |
 | DONE-07 | 支援 | 加入阿凱老師 footer 版權聲明與石門國小正確連結。 | 已確認使用「石門國小」，未使用錯誤校名。 |
 | DONE-08 | 支援 | OG meta、Twitter meta、絕對網址與版本快取參數已設定。 | `og:image` 使用 GitHub Pages 絕對 HTTPS 網址，尺寸標示為 1200×630。 |
 | DONE-09 | P1／ROADMAP-01 | 建立費用、活動流程、活動提醒與研習資料的 `site-data.js` 單一資料來源，HTML 保留無 JavaScript 時的可讀 fallback。 | `app.js` 依設定資料渲染清單；發布檢查會驗證 `data-value` 欄位與 1,200＋300＝1,500 元規則。 |
@@ -32,13 +32,13 @@
 | DONE-14 | P2／ROADMAP-07 | 新增手機友善快速入口、四張公開 QR 導覽卡與列印版面。 | QR 只包含固定公開錨點；4 張 QR 逐張解碼驗證，列印時只保留快速入口區。 |
 | DONE-15 | P2／ROADMAP-08 | 新增公告置頂、即將開始、進行中與已封存狀態。 | 依 `startsAt`、`archiveAt`、`priority` 與 `pinned` 自動排序；首頁頂端公告同步取目前有效項目。 |
 | DONE-16 | P2／ROADMAP-10 | 新增 PWA 狀態頁、離線 fallback 與快取預載內容。 | `pwa-health.html` 顯示公開版本、SW 快取版本與連線狀態；`offline.html` 納入 Service Worker fallback。 |
-| DONE-17 | P2／ROADMAP-11 | 新增本機匿名使用統計與 JSON 匯出。 | 只存瀏覽器 localStorage，不使用 Cookie、不送出資料、不收集會員或付款資訊；跨裝置彙整尚未啟用。 |
+| DONE-17 | P2／ROADMAP-11 | 新增本機匿名使用統計與 JSON 匯出。 | 保留瀏覽器 localStorage 明細；中央彙整另只傳固定事件名稱與網站版本，不收集會員或付款資訊。 |
 | DONE-18 | P3／ROADMAP-12 | 統一現有 favicon、PWA icon、OG 圖與網站色彩，建立 `brand-assets.json` 資產治理檔。 | 目前明確標示為 provisional site brand；正式工會 logo／新版海報素材取得授權後再替換。 |
-| IN-PROGRESS-19 | P2／ROADMAP-11 延伸 | 建立 GAS Web App＋Google Sheets 匿名中央彙整後端，事件細分到快速入口、公告與各內容區塊閱覽。 | `gas/Code.gs` 已完成固定事件白名單、每日彙總與並發鎖；正式啟用仍需 Web App 匿名存取設定與 `initializeBackend` 首次授權。 |
+| DONE-19 | P2／ROADMAP-11 延伸 | 建立並啟用 GAS Web App＋Google Sheets 匿名中央彙整後端，事件細分到快速入口、公告與各內容區塊閱覽。 | Web App health 與匿名 POST 均回應 HTTP 200；`initializeBackend` 已建立私人試算表，網站已接回正式 `/exec`。 |
 
 ## 目前開放項目
 
-目前沒有已知的 P0 或 P1 開放項目；本輪原先的 `OPEN-01` 社群分享圖已由 `DONE-10` 關閉。P2／P3 所選項目已完成第一階段；目前新增的 GAS 中央彙整已完成本機程式與 deployment 建立，但因 Google Workspace 的匿名存取設定與首次授權仍需在 GAS 編輯器完成，尚未把 `/exec` 網址寫入前端。
+目前沒有已知的 P0、P1 或本輪選定 P2 開放項目；本輪原先的 `OPEN-01` 社群分享圖已由 `DONE-10` 關閉。GAS 中央彙整已完成部署、匿名存取設定、首次初始化與前端接線；統計資料維持在私人 Google 試算表中。
 
 ## 後續優化與可開發功能候選清單
 
@@ -56,11 +56,11 @@
 | ROADMAP-08 | P2／第一階段完成 | 公告置頂、過期與封存：新活動置頂，過期活動轉入歷史區，避免首頁長期顯示過期日期。 | 低至中；日期由正式公文與校內通知維護，封存前需人工核對。 | 中；需維護開始／封存日期、時區與 priority。 | 已完成 upcoming／active／archived 狀態函式、首頁排序與頂端公告同步。 |
 | ROADMAP-09 | P2／第一階段完成 | 建立手機寬度、鍵盤操作、標題階層、圖片替代文字、連結與 focus 樣式的可重複檢查。 | 低；靜態檢查不能取代真人使用者或螢幕閱讀器測試。 | 低至中；若加入 Playwright／Lighthouse，需維護瀏覽器執行環境。 | 目前 CI 已檢查 HTML／CSS／manifest；第二階段可再加入真實 390 px screenshot、鍵盤流程與 Lighthouse 報告。 |
 | ROADMAP-10 | P2／第一階段完成 | PWA 離線備援與快取健康頁，讓網路不穩時仍能看到最後可用內容並知道快取版本。 | 低至中；新版提示仍保留，避免過期費用或活動內容無聲長留。 | 中；需持續維護快取清單、fallback 與更新提示。 | 已完成 PWA 狀態頁、offline fallback、版本查詢與新頁面預快取。 |
-| ROADMAP-11 | P2／第一階段完成 | 隱私友善的使用統計，只看頁面與活動入口使用量，不建立會員識別資料。 | 中；目前限定本機 localStorage，不做跨裝置彙整，避免未確認的第三方傳輸。 | 低；若要彙整，需另行確認服務、告知與保存期限。 | 已完成入口事件、本機統計頁、JSON 匯出與清除功能；未發送姓名、電話、名冊或付款資訊。 |
+| ROADMAP-11 | P2／第一階段＋中央彙整完成 | 隱私友善的使用統計，只看頁面與活動入口使用量，不建立會員識別資料。 | 中；中央端點採固定事件白名單與私人試算表，匿名事件可能被灌量，不能當作去重教師人數。 | 中；需維護 GAS deployment、試算表權限、事件白名單與版本更新。 | 已完成入口／公告／內容區塊事件、本機統計頁、JSON 匯出、GAS health 200、匿名 POST 200 與私有試算表寫入驗證。 |
 | ROADMAP-12 | P3／第一階段完成 | 先統一現有 favicon、PWA icon、OG 圖與色彩；正式 logo／QR／海報授權後再做品牌替換。 | 中；目前不宣稱現有圖示為工會正式 logo，避免未授權使用。 | 低至中；授權素材到位後需重產多尺寸 icon 與 OG 圖。 | 已建立 brand asset manifest、網站圖示套件與一致色彩；正式素材仍待提供與授權。 |
 
 ## RDQ 狀態
 
 - RDQ 規格卡：`rdq/RDQ-spec-teachergroup-roadmap-20260908.md`。
 - 會長已確認本輪再執行 `ROADMAP-07`、`ROADMAP-08`、`ROADMAP-10`、`ROADMAP-11`、`ROADMAP-12`；規格卡維持 `confirmed`，並記錄「本機統計、不傳個資、正式 logo 待授權」等限制。
-- 本輪仍維持 GitHub Pages 靜態網站，不新增公開後台、資料庫、登入、付款或會員個資收集功能。
+- 本輪仍維持 GitHub Pages 靜態網站；新增的 GAS 只做固定事件的匿名每日彙總，不新增公開後台、登入、付款或會員個資收集功能。
