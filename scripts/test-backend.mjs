@@ -155,3 +155,11 @@ test('daily maintenance records failure and recovers on the next successful back
   f.box.createBackup_=()=>({id:'backup'});f.box.retentionPreview_=()=>({expiredStatistics:0});
   f.box.dailyMaintenance_();status=JSON.parse(f.properties.get('MAINTENANCE'));assert.equal(status.ok,true);assert.equal(status.retention.expiredStatistics,0);
 });
+
+test('legacy date cells update an existing daily event row instead of appending a duplicate', () => {
+  const f=fixture();vm.runInContext(readFileSync(new URL('../gas/Code.gs',import.meta.url),'utf8').replace('const CONFIG =','var LEGACY_CONFIG =').replace('const ALLOWED_EVENTS =','var LEGACY_EVENTS ='), f.box);
+  let appended=0, written;
+  const date=f.box.day_();
+  f.box.getSummarySheet_=()=>({getLastRow:()=>2,getRange:(row,col)=>row===2&&col===1?{getValues:()=>[[new Date(date),'section_view_contact',3,'']],getDisplayValues:()=>[[date,'section_view_contact','3','']]}:{setValues:value=>{written=value}},appendRow:()=>{appended++}});
+  f.box.incrementEvent_('section_view_contact');assert.equal(appended,0);assert.equal(written[0][0],4);
+});

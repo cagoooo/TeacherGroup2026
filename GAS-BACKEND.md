@@ -13,7 +13,7 @@ Google 試算表只會有：
 
 事件次數是使用量指標，不等同於去重後的老師人數。公開網站仍保留本機統計；中央統計啟用後，前端用 `sendBeacon` 或非阻塞 `fetch` 傳送固定事件，失敗時不影響網站閱讀。
 
-## 管理與維運版本 2.0.0
+## 管理與維運版本 2.0.1
 
 - 管理入口：在既有 `/exec` 網址後加 `?action=admin`。Google 未回傳可驗證的登入帳號、帳號未列入白名單或遭停權時，一律拒絕。
 - 目前採同學校 Workspace 網域白名單；跨網域帳號不能直接加入。不可把 `getEffectiveUser()` 的部署者身分當作網頁訪客，亦不接受前端傳入 email 取代身分驗證。
@@ -69,6 +69,8 @@ Google 試算表只會有：
 本專案目前已完成上述啟用流程：Web App 健康檢查回應 HTTP 200、匿名事件 POST 回應 HTTP 200，且已建立私人試算表。後續若變更 GAS 程式，請保留同一個 deployment ID 並依下方「後續更新」流程重新部署。
 
 ## 後續更新
+
+所有 CLASP 指令請先切換到本專案 `gas/` 目錄執行；不要在 repository 根目錄以空 `rootDir` 的 `.clasp.json` 推送，避免遠端檔名意外多出 `gas/` 前綴，導致 HtmlService 無法找到 `Dashboard`。`clasp status` 應顯示 `Admin.gs`、`Code.gs`、`Operations.gs`、`Dashboard.html` 與 `appsscript.json`。
 
 既有 Web App 更新時，先用 `clasp list-deployments <scriptId>` 確認 deployment ID 屬於同一支 script，再依序執行：
 

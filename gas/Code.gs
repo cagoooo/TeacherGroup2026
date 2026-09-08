@@ -149,7 +149,7 @@ function incrementEvent_(eventName) {
     const updatedAt = Utilities.formatDate(new Date(), CONFIG.timeZone, 'yyyy-MM-dd HH:mm:ss');
     const lastRow = sheet.getLastRow();
     const rowCount = Math.max(lastRow - 1, 0);
-    const rows = rowCount ? sheet.getRange(2, 1, rowCount, 4).getValues() : [];
+    const rows = rowCount ? sheet.getRange(2, 1, rowCount, 4).getDisplayValues() : [];
     const matchIndex = rows.findIndex((row) => String(row[0]) === day && String(row[1]) === eventName);
 
     if (matchIndex >= 0) {

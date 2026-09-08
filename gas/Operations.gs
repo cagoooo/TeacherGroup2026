@@ -1,5 +1,5 @@
 const OPS = Object.freeze({
-  version: '2.0.0', retentionDays: 365, backupDays: 30,
+  version: '2.0.1', retentionDays: 365, backupDays: 30,
   acceptedVersions: ['2026.09.08-3', '2026.09.08-4', '2026.09.08-5'],
   minuteLimit: 120, dayLimit: 20000,
   auditSheet: '管理稽核', versionSheet: '版本統計', backupSheet: '備份索引'

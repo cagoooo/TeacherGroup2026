@@ -4,20 +4,22 @@
 
 ## 目前狀態
 
-- 網站版本：2026.09.08-5，管理後端 2.0.0，GAS 正式 deployment 更新為 version 4；沿用同一 `/exec`。
+- 網站版本：2026.09.08-5，管理後端 2.0.1，GAS 正式 deployment 更新為 version 6；沿用同一 `/exec`。
 - Google 補充授權及 `initializeOperations` 已成功。
 - 首份私人備份包含 9 列（包含統計／稽核），SHA-256 `0beeb1ad792c9b19e720f62cf5010dbcebdfca4dd6e82f98b74620859e05baaf`。
 - 雲端隔離復原成功，比對同一 SHA-256，回傳 `productionUntouched: true`，正式資料未覆寫。
 - 觸發條件頁確認只有 1 個 `dailyMaintenance_` 時間觸發條件；尚未等到隔日首次自動執行，備份函式已經手動初始化實測。
 - 正式管理頁：學校擁有者身分可驗證，報表可讀；未登入 HTTP 請求只收到登入提示，不含報表內容。
 - 正式 CSV／JSON 皆成功下載、解析，共 9 筆資料、事件總次數均 9（驗證時點）。後續使用會繼續增加。
-- 正式 health 回 `ok:true`、`backendVersion:2.0.0`、`storage:ready`。
+- 正式 health 回 `ok:true`、`backendVersion:2.0.1`、`storage:ready`。
 - 正式單次 `section_view_quick_entry` 冒煙測試寫入成功，重送相同 requestId 回 `duplicate:true`，無效事件回 `invalid_request`；驗收流量不是教師人數。
 - 其他角色與停權的行為以隔離 mock 測試驗證；未借用或新增真實教師帳號進行跨帳號測試。
+- 後端 2.0.1 修正歷史日期物件的比對：使用與報表一致的日期顯示值匹配。正式重送新請求後，`section_view_quick_entry` 維持 1 列、count 由 1 變 2；既有同日重複列保留，不自動合併或刪除，報表加總不受影響。
+- GitHub Pages 的網站 2026.09.08-5 已部署成功，實際瀏覽確認使用統計頁含私人管理報表入口。
 
 ## 已完成本機驗證
 
-`npm run test:backend`：17 項通過；`npm run check:site` 與 `git diff --check` 通過。
+`npm run test:backend`：18 項通過；`npm run check:site` 與 `git diff --check` 通過。
 
 涵蓋未登入／非白名單／停權拒絕、管理 RPC 權限、不可冒用 email、同網域角色增修與即時停權、不能降級自身擁有者、schema／版本／事件白名單、個資額外欄位與過大本文拒絕、短期重複請求去重、每分鐘上限、隱去內部錯誤、儲存故障健康狀態、日期區間彙總、損壞備份拒絕、保存門檻範圍、快速入口事件正規化、備份先私人再寫入、模擬完整備份復原比對，以及請求碼不保存為訪客識別碼。
 
