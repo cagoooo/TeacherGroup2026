@@ -1,7 +1,7 @@
 ---
 rdq_version: 2
 edition: chatgpt-app
-task: 執行已選 ROADMAP-01、ROADMAP-02、ROADMAP-03、ROADMAP-05、ROADMAP-07、ROADMAP-08、ROADMAP-09、ROADMAP-10、ROADMAP-11、ROADMAP-12 第一階段，並啟用 ROADMAP-11 匿名中央彙整延伸
+task: 執行已選十項 Roadmap 第一階段、ROADMAP-11 匿名中央彙整延伸，以及依優先順序完成前端活動狀態、手機快速操作與互動無障礙優化
 domain: dev
 date: 2026-09-08
 status: confirmed
@@ -20,7 +20,7 @@ downstream: self
 依會長已選定的十項 Roadmap，完成 TeacherGroup2026 靜態網站第一階段的資料單一來源、社群圖、發布防呆、活動模組化、無障礙／裝置檢查、QR 導覽、公告生命週期、PWA 離線備援、本機匿名統計與品牌資產治理，並保留後續私有後台等功能的選擇權。
 
 ## 已確認
-- 專案是 GitHub Pages 靜態網站 `TeacherGroup2026`，目前公開版本為 **2026.09.08-2**。
+- 專案是 GitHub Pages 靜態網站 `TeacherGroup2026`，目前公開版本為 **2026.09.08-6**。
 - 本次收費須呈現 **1,200 元工會會費／入會費＋300 元石門國小校內康樂費＝1,500 元**。
 - 校內流程是教師小組代收、財務長處理工會匯款；新進／中斷會員由支會長協助建檔。
 - 本輪已確認執行 `ROADMAP-01`、`ROADMAP-02`、`ROADMAP-03`、`ROADMAP-05`、`ROADMAP-07`、`ROADMAP-08`、`ROADMAP-09`、`ROADMAP-10`、`ROADMAP-11`、`ROADMAP-12` 的靜態網站第一階段；會長後續明確要求啟用 `ROADMAP-11` 的匿名中央彙整延伸。
@@ -43,6 +43,7 @@ downstream: self
 - `ROADMAP-10`：新增 PWA 健康頁與離線 fallback，Service Worker 預載狀態頁、QR 與品牌資產，並保留版本更新提示。
 - `ROADMAP-11`：新增本機匿名使用統計頁與 JSON 匯出／清除功能，並以 GAS Web App＋Google Sheets 彙整固定區塊事件，不傳送姓名、電話、名冊或付款資訊。
 - `ROADMAP-12`：建立 `brand-assets.json`，統一 favicon、PWA icon、OG 圖與配色的資產索引；正式 Logo／QR／海報尚待授權。
+- 前端優先優化：活動與研習入口依日期顯示尚未開放／報名中／已截止／已結束；手機提供固定續會、入會、活動、聯絡快速列與回到頁首；選單支援 Escape、開啟後焦點移入、關閉後焦點回復、頁內錨點焦點與減少動態效果。
 
 ## 本次不納入
 - 不變更現行收費規則、不公開會員名冊、不建立公開自助入會表單。
@@ -55,7 +56,7 @@ downstream: self
 - [x] 對話中列出目前 P0、已完成 P1 與開放 P1。
 - [x] 進度表可追溯至公開版本、GitHub `main` 與自動化驗證結果。
 - [x] 候選功能有編號、優先級、使用情境、資料／權限風險、維護代價與驗收方式。
-- [x] 會長已確認五項 Roadmap，本規格卡狀態由 `draft` 更新為 `confirmed`。
+- [x] 會長已確認十項 Roadmap，本規格卡狀態由 `draft` 更新為 `confirmed`。
 - [x] `npm run check:site` 通過，包含費用規則、OG PNG、版本一致性、禁止回歸文案、頁內連結與第一階段無障礙檢查。
 - [x] `npm run generate:qr` 通過，四張 QR 以高容錯率產製並逐張解碼，內容均為公開頁面錨點且不含會員資料。
 - [x] `pwa-health.html`、`offline.html`、Service Worker 預載清單與版本查詢流程已建立；PWA 快取涵蓋快速入口 QR 與品牌資產。

@@ -23,6 +23,36 @@
     return /^assets\/[a-z0-9._/-]+$/i.test(asset) ? escapeHtml(asset) : "assets/favicon.svg";
   };
 
+  const registrationStates = Object.freeze({
+    upcoming: Object.freeze({ label: "尚未開放", description: "報名尚未開始，請於開放後依下方方式辦理。", icon: "bi-hourglass-split" }),
+    open: Object.freeze({ label: "報名中", description: "目前可依下方方式報名，額滿可能提前截止。", icon: "bi-check-circle-fill" }),
+    closed: Object.freeze({ label: "報名已截止", description: "已超過報名期限，請留意主辦單位後續公告。", icon: "bi-lock-fill" }),
+    ended: Object.freeze({ label: "活動已結束", description: "本場活動已結束，請查看其他最新宣導。", icon: "bi-check2-circle" })
+  });
+
+  const parseTimestamp = (value) => {
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? null : date;
+  };
+
+  const getRegistrationState = (item, now = new Date()) => {
+    const startsAt = parseTimestamp(item.registrationStartsAt);
+    const endsAt = parseTimestamp(item.registrationEndsAt);
+    const eventEndsAt = parseTimestamp(item.eventEndsAt);
+    if (!startsAt || !endsAt || startsAt >= endsAt) return { key: "closed", ...registrationStates.closed };
+    if (eventEndsAt && now >= eventEndsAt) return { key: "ended", ...registrationStates.ended };
+    if (now < startsAt) return { key: "upcoming", ...registrationStates.upcoming };
+    if (now < endsAt) return { key: "open", ...registrationStates.open };
+    return { key: "closed", ...registrationStates.closed };
+  };
+
+  const statusMarkup = (className, state) => `
+    <div class="${className} registration-status registration-status-${state.key}" data-registration-state="${state.key}" aria-live="polite" aria-atomic="true">
+      <i class="bi ${state.icon}" aria-hidden="true"></i>
+      <span><strong>${state.label}</strong><small>${state.description}</small></span>
+    </div>
+  `;
+
   document.querySelectorAll("[data-value]").forEach((element) => {
     const value = config[element.dataset.value];
     if (value !== undefined) element.textContent = value;
@@ -63,8 +93,11 @@
     if (!target || !Array.isArray(config.workshops)) return;
 
     target.innerHTML = config.workshops.map((workshop) => {
+      const state = getRegistrationState(workshop);
       const registration = workshop.registrationMode === "form"
-        ? `<a class="button button-primary" href="${safeHref(workshop.registrationUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(workshop.registrationLabel)} <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></a>`
+        ? state.key === "open"
+          ? `<a class="button button-primary" href="${safeHref(workshop.registrationUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(workshop.registrationLabel)} <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></a>`
+          : `<span class="button button-disabled" aria-disabled="true">${state.label}</span>`
         : `<div class="workshop-course-code"><span>研習系統課程編號</span><strong>${escapeHtml(workshop.courseCode)}</strong></div>`;
 
       return `
@@ -86,6 +119,7 @@
             <div><dt><i class="bi bi-clock-history" aria-hidden="true"></i> 時數</dt><dd><strong>${escapeHtml(workshop.hours)}</strong></dd></div>
           </dl>
           <div class="workshop-card-footer">
+            ${statusMarkup("workshop-registration-status", state)}
             ${registration}
             <p class="workshop-registration-note"><i class="bi bi-alarm-fill" aria-hidden="true"></i><span><strong>${escapeHtml(workshop.registrationWindow)}</strong> ${escapeHtml(workshop.registrationNote)}</span></p>
           </div>
@@ -106,6 +140,65 @@
         <img class="quick-entry-qr" src="${safeAsset(entry.qrAsset)}" width="176" height="176" alt="掃描後前往${escapeHtml(entry.title)}說明">
       </article>
     `).join("");
+  };
+
+  const renderActivityRegistrationState = () => {
+    const target = document.querySelector("[data-activity-registration-status]");
+    if (!target) return;
+    const state = getRegistrationState({
+      registrationStartsAt: config.activityRegistrationStartsAt,
+      registrationEndsAt: config.activityRegistrationEndsAt,
+      eventEndsAt: config.activityEventEndsAt
+    });
+    target.className = `activity-registration-status registration-status registration-status-${state.key}`;
+    target.dataset.registrationState = state.key;
+    target.innerHTML = `
+      <i class="bi ${state.icon}" aria-hidden="true"></i>
+      <span><strong>${state.label}</strong><small>${state.description}</small></span>
+    `;
+
+    const action = document.querySelector("[data-activity-registration-action]");
+    if (!action) return;
+    const isOpen = state.key === "open";
+    action.classList.toggle("button-disabled", !isOpen);
+    action.classList.toggle("button-primary", isOpen);
+    action.dataset.registrationInactive = String(!isOpen);
+    if (isOpen) {
+      action.href = config.activityRegistrationUrl;
+      action.target = "_blank";
+      action.removeAttribute("aria-disabled");
+      action.removeAttribute("tabindex");
+      action.innerHTML = "前往活動報名 <i class=\"bi bi-box-arrow-up-right\" aria-hidden=\"true\"></i>";
+    } else {
+      action.href = "#activities";
+      action.removeAttribute("target");
+      action.setAttribute("aria-disabled", "true");
+      action.setAttribute("tabindex", "-1");
+      action.innerHTML = `${state.label} <i class="bi ${state.icon}" aria-hidden="true"></i>`;
+    }
+  };
+
+  let registrationRefreshTimer = null;
+  const scheduleRegistrationRefresh = () => {
+    if (registrationRefreshTimer) window.clearTimeout(registrationRefreshTimer);
+    const now = Date.now();
+    const timestamps = [
+      ...(config.workshops ?? []).flatMap((workshop) => [workshop.registrationStartsAt, workshop.registrationEndsAt, workshop.eventEndsAt]),
+      config.activityRegistrationStartsAt,
+      config.activityRegistrationEndsAt,
+      config.activityEventEndsAt
+    ]
+      .map(parseTimestamp)
+      .filter((date) => date && date.getTime() > now)
+      .map((date) => date.getTime());
+    const nextTimestamp = Math.min(...timestamps);
+    if (!Number.isFinite(nextTimestamp)) return;
+    registrationRefreshTimer = window.setTimeout(() => {
+      renderWorkshops();
+      renderActivityRegistrationState();
+      bindUsageEvents();
+      scheduleRegistrationRefresh();
+    }, Math.max(1000, nextTimestamp - now + 250));
   };
 
   const getAnnouncementState = (announcement, now = new Date()) => {
@@ -166,6 +259,8 @@
 
   const bindUsageEvents = () => {
     document.querySelectorAll("[data-usage-event]").forEach((element) => {
+      if (element.dataset.usageBound === "true") return;
+      element.dataset.usageBound = "true";
       element.addEventListener("click", () => {
         window.TeacherGroupUsage?.record(element.dataset.usageEvent);
       });
@@ -203,6 +298,8 @@
   renderActivitySchedule();
   renderActivityReminders();
   renderWorkshops();
+  renderActivityRegistrationState();
+  scheduleRegistrationRefresh();
   renderQuickEntries();
   renderAnnouncements();
   renderAnnouncementStrip();
@@ -218,24 +315,55 @@
   const nav = document.querySelector(".site-nav");
 
   if (button && nav) {
+    const menuLabel = button.querySelector(".visually-hidden");
+    const setMenuState = (isOpen, { returnFocus = false, focusFirstLink = false } = {}) => {
+      button.setAttribute("aria-expanded", String(isOpen));
+      button.setAttribute("aria-label", isOpen ? "關閉選單" : "開啟選單");
+      if (menuLabel) menuLabel.textContent = isOpen ? "關閉選單" : "開啟選單";
+      nav.classList.toggle("is-open", isOpen);
+      if (focusFirstLink) nav.querySelector("a")?.focus();
+      if (returnFocus) button.focus();
+    };
+
     button.addEventListener("click", () => {
       const open = button.getAttribute("aria-expanded") === "true";
-      button.setAttribute("aria-expanded", String(!open));
-      nav.classList.toggle("is-open", !open);
+      setMenuState(!open, { focusFirstLink: !open });
     });
 
     nav.querySelectorAll("a").forEach((link) => {
-      link.addEventListener("click", () => {
-        button.setAttribute("aria-expanded", "false");
-        nav.classList.remove("is-open");
-      });
+      link.addEventListener("click", () => setMenuState(false));
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && button.getAttribute("aria-expanded") === "true") {
+        event.preventDefault();
+        setMenuState(false, { returnFocus: true });
+      }
+    });
+
+    document.addEventListener("click", (event) => {
+      if (button.getAttribute("aria-expanded") !== "true") return;
+      if (nav.contains(event.target) || button.contains(event.target)) return;
+      setMenuState(false);
     });
   }
 
-  const navLinks = [...document.querySelectorAll('.site-nav a[href^="#"]')];
-  const sections = navLinks
+  const navLinks = [...document.querySelectorAll('.site-nav a[href^="#"], .mobile-quick-nav a[href^="#"]')];
+  const sections = [...new Set(navLinks
     .map((link) => document.querySelector(link.getAttribute("href")))
-    .filter(Boolean);
+    .filter(Boolean))];
+
+  const focusHashTarget = (hash = window.location.hash) => {
+    if (!hash || hash === "#") return;
+    const targetId = decodeURIComponent(hash.slice(1));
+    const target = document.getElementById(targetId);
+    if (!target) return;
+    if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
+    window.setTimeout(() => target.focus({ preventScroll: true }), 0);
+  };
+
+  window.addEventListener("hashchange", () => focusHashTarget());
+  focusHashTarget();
 
   if ("IntersectionObserver" in window && sections.length) {
     const observer = new IntersectionObserver(
@@ -243,12 +371,27 @@
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
           navLinks.forEach((link) => link.removeAttribute("aria-current"));
-          const active = document.querySelector(`.site-nav a[href="#${entry.target.id}"]`);
-          active?.setAttribute("aria-current", "page");
+          navLinks
+            .filter((link) => link.getAttribute("href") === `#${entry.target.id}`)
+            .forEach((link) => link.setAttribute("aria-current", "page"));
         });
       },
       { rootMargin: "-34% 0px -58% 0px", threshold: 0.01 }
     );
     sections.forEach((section) => observer.observe(section));
+  }
+
+  const activityRegistrationAction = document.querySelector("[data-activity-registration-action]");
+  activityRegistrationAction?.addEventListener("click", (event) => {
+    if (activityRegistrationAction.dataset.registrationInactive === "true") event.preventDefault();
+  });
+
+  const backToTop = document.querySelector(".back-to-top");
+  if (backToTop) {
+    const updateBackToTopVisibility = () => {
+      backToTop.hidden = window.scrollY < 520;
+    };
+    window.addEventListener("scroll", updateBackToTopVisibility, { passive: true });
+    updateBackToTopVisibility();
   }
 })();

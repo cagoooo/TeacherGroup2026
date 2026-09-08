@@ -4,7 +4,7 @@
 
 ## 目前狀態
 
-- 網站版本：2026.09.08-5，管理後端 2.0.1，GAS 正式 deployment 更新為 version 6；沿用同一 `/exec`。
+- 網站版本：2026.09.08-6，管理後端 2.0.1，GAS 正式 deployment 更新為 version 7；沿用同一 `/exec`。
 - Google 補充授權及 `initializeOperations` 已成功。
 - 首份私人備份包含 9 列（包含統計／稽核），SHA-256 `0beeb1ad792c9b19e720f62cf5010dbcebdfca4dd6e82f98b74620859e05baaf`。
 - 雲端隔離復原成功，比對同一 SHA-256，回傳 `productionUntouched: true`，正式資料未覆寫。
@@ -15,7 +15,8 @@
 - 正式單次 `section_view_quick_entry` 冒煙測試寫入成功，重送相同 requestId 回 `duplicate:true`，無效事件回 `invalid_request`；驗收流量不是教師人數。
 - 其他角色與停權的行為以隔離 mock 測試驗證；未借用或新增真實教師帳號進行跨帳號測試。
 - 後端 2.0.1 修正歷史日期物件的比對：使用與報表一致的日期顯示值匹配。正式重送新請求後，`section_view_quick_entry` 維持 1 列、count 由 1 變 2；既有同日重複列保留，不自動合併或刪除，報表加總不受影響。
-- GitHub Pages 的網站 2026.09.08-5 已部署成功，實際瀏覽確認使用統計頁含私人管理報表入口。
+- GAS 新版相容冒煙測試以網站版本 `2026.09.08-6` 回傳 `ok:true`；不合規測試 requestId 回傳 `invalid_request`，輸入護欄維持有效。
+- GitHub Pages 的網站 2026.09.08-6 已部署成功，實際瀏覽確認使用統計頁含私人管理報表入口。
 
 ## 已完成本機驗證
 
@@ -31,7 +32,7 @@
 4. 核對 `clasp show-authorized-user -u school` 與 `list-deployments`；先推送任何後續修正，再建立版本，使用原 deployment ID 執行 `update-deployment`。
 5. 驗證 health ready、匿名錯誤事件不寫入、管理頁未登入拒絕、學校擁有者登入可查看報表／下載 CSV、私人備份與演練可用。
 6. 如需製造事件驗收，記錄明確測試事件及次數；不要把驗收流量當教師閱覽數，不刪除混有正式資料的紀錄。
-7. 再發布前端 2026.09.08-5，驗證 Pages 與 SW 更新提示，從使用統計頁可前往管理入口。
+7. 再發布前端 2026.09.08-6，驗證 Pages 與 SW 更新提示，從使用統計頁可前往管理入口。
 8. 完成後更新此文件及 PROJECT-PROGRESS；不能預先標記雲端備份、角色跨帳號或復原演練成功。
 
 ## 採用預設與限制

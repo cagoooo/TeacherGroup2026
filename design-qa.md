@@ -48,7 +48,7 @@ The workshop section is grounded in `活動宣導內容\3\公文內容.pdf` and 
 
 - [P1, fixed] 社群分享圖的費用視覺已同步本次 1,500 元收費明細。
   - Fix: 以 `scripts/generate-og-image.mjs` 搭配本機繁中文字型重新產製 `assets/og-image.png`，明確呈現「工會會費／入會費 1,200 元＋校內康樂費 300 元＝1,500 元」。
-  - Post-fix evidence: 檔案為真正 PNG，尺寸 1200×630、檔案大小約 581 KB；`index.html` 的 `og:image`、`secure_url` 與 Twitter image 均使用 `v=2026.09.08-2`，`npm run check:site` 通過。
+  - Post-fix evidence: 檔案為真正 PNG，尺寸 1200×630、檔案大小約 581 KB；`index.html` 的 `og:image`、`secure_url` 與 Twitter image 均使用目前版本化參數，`npm run check:site` 通過。
 
 - [P2, fixed] 發布前內容、版本與第一階段無障礙護欄已自動化。
   - Fix: 新增 `scripts/check-site.mjs` 與 `.github/workflows/site-check.yml`，檢查 1,200＋300＝1,500 元、角色分工、錯誤校名、舊名冊說明、版本一致性、OG 圖格式、頁內連結、語系、viewport、skip link、main landmark、h1、圖片替代文字、focus-visible 與手機斷點。
@@ -74,7 +74,19 @@ The workshop section is grounded in `活動宣導內容\3\公文內容.pdf` and 
   - Fix: 新增 `brand-assets.json`，索引 favicon、PWA icon 與 OG 圖，並明確記錄 `officialLogoAuthorized: false`。
   - Post-fix evidence: 靜態檢查驗證 manifest 狀態與資產路徑；正式 Logo／QR／新版海報仍待取得授權後再更新。
 
-目前沒有已知的 P0、P1 或 P2 開放發現；ROADMAP-09 的完整瀏覽器 screenshot／Lighthouse 自動化仍是可選的第二階段，不是目前公開版本的阻塞問題。
+- [P1, fixed] 活動與研習報名入口需要隨日期轉換，避免活動已截止時仍顯示可報名按鈕。
+  - Fix: 在 `site-data.js` 為活動與三場研習加入報名開始／截止／活動結束時間；`app.js` 統一渲染尚未開放、報名中、報名已截止與活動已結束狀態，並在時間邊界自動刷新。
+  - Post-fix evidence: 電影研習以表單按鈕呈現開放狀態；非開放期間會顯示停用按鈕，日期欄位與順序由 `npm run check:site` 驗證。
+
+- [P2, fixed] 手機使用者需要在長頁面中快速回到續會、入會、活動與聯絡區塊。
+  - Fix: 新增手機固定快速操作列與回到頁首按鈕；沿用既有公開錨點，不新增會員資料或特殊 URL 參數。
+  - Post-fix evidence: 390 px 版面保留底部安全間距，快速入口與 PWA 更新提示不互相遮蔽；桌機與列印 CSS 會隱藏固定操作列。
+
+- [P2, fixed] 手機選單與頁內跳轉需要更完整的鍵盤及輔助技術行為。
+  - Fix: 選單開啟後將焦點移至第一個連結，Escape 可關閉並將焦點送回按鈕；頁內 hash 跳轉會將焦點移到目標，並尊重 `prefers-reduced-motion`。
+  - Post-fix evidence: `npm run check:site` 驗證 Escape、focus、錨點間距與減少動態效果護欄；完整 Lighthouse 報告仍屬後續可選自動化。
+
+目前沒有已知的 P0、P1 或 P2 開放發現；ROADMAP-09 的完整 Lighthouse 自動化仍是可選的後續工作，不是目前公開版本的阻塞問題。
 
 ## Fidelity surfaces
 
@@ -83,7 +95,7 @@ The workshop section is grounded in `活動宣導內容\3\公文內容.pdf` and 
 - Colors and visual tokens: navy is used for renewal and navigation, green for new-member actions, warm yellow for the urgency notice, and red for monetary amounts. Contrast remains strong on cream, white, navy, and green surfaces.
 - Image and icon fidelity: the supplied poster is used only as visual reference and is not republished. The site has no recreated poster illustrations, CSS art, inline SVG, or placeholder imagery. Standard Bootstrap Icons load as a consistent icon library after `document.fonts.ready`.
 - Copy and content: annual fee, current collection split (1,200 元工會會費／入會費＋300 元石門國小校內康樂費＝1,500 元), deadlines, discounts, transfer account, contact channels, and the supplied secretary message are retained as source references；公開操作文案則以石門國小支會實際代收、統合匯款與後台建檔流程為準。新增活動專區依 115 年 9 月 3 日公文與活動計畫整理，包含報名時間、活動地點、名額、流程、研習時數與注意事項；新增多元研習專區依 115 年 9 月 4 日公文及三份附件計畫整理，包含三場研習的報名期限、課程編號與不同報名方式。116/1/1 的工會端費用例外說明仍保留於 FAQ，並與校內康樂費分開標示。
-- Responsiveness and accessibility: tested at 1440 × 1024 and 390 × 844. No horizontal overflow was detected. Keyboard focus styles, semantic headings, real buttons, details/summary FAQ controls, a skip link, named navigation, and clear external-link labels are present.
+- Responsiveness and accessibility: tested at 1440 × 1024 and 390 × 844. No horizontal overflow was detected. Keyboard focus styles, semantic headings, real buttons, details/summary FAQ controls, a skip link, named navigation, clear external-link labels, mobile quick actions and reduced-motion handling are present.
 
 ## Interaction checks
 
@@ -93,6 +105,9 @@ The workshop section is grounded in `活動宣導內容\3\公文內容.pdf` and 
 - 「活動宣導」導覽與首頁最新活動連結可正確導向 `#activities`；活動報名與活動專屬頁兩個公文連結均可開啟。
 - 首頁最新公告可導向 `#workshops`；電影研習 Google 表單連結可開啟，另外兩場顯示正確課程編號與研習系統報名提示。
 - FAQ disclosure opens correctly.
+- 活動與研習卡片會依目前日期顯示報名狀態；報名截止後不再提供可點擊的表單按鈕。
+- 手機快速操作列可導向續會、入會、活動與聯絡錨點；回到頁首按鈕在捲動後出現，並可用鍵盤操作。
+- 手機選單開啟後焦點移入第一個連結，按 Escape 關閉後焦點回到選單按鈕；頁內錨點跳轉會將焦點送到目標區塊。
 - 活動專區呈現四段當日流程與五項出發提醒，並清楚區分活動報名與研習時數登錄說明；多元研習專區呈現三張研習卡片。
 - 校內流程 CTA 可正確導向 `#payment`；新進及中斷會員文案均導向支會長，沒有個別匯款或自行填寫官方表單的操作入口。
 - Official union website live HTTP check returned 200.

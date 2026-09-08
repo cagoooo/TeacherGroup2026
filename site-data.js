@@ -146,6 +146,8 @@ const workshopData = Object.freeze([
     registrationMode: "form",
     registrationUrl: "https://forms.gle/SupkcaojeeJzPb4RA",
     registrationLabel: "前往 Google 表單",
+    registrationStartsAt: "2026-09-07T12:30:00+08:00",
+    registrationEndsAt: "2026-09-11T16:00:00+08:00",
     registrationWindow: "9/7（一）12:30～9/11（五）16:00",
     registrationNote: "止，額滿即關閉；錄取後再依通知至研習系統完成報名。"
   },
@@ -167,6 +169,9 @@ const workshopData = Object.freeze([
     hours: "8 小時",
     registrationMode: "course",
     courseCode: "Z00002-260800001",
+    registrationStartsAt: "2026-09-04T00:00:00+08:00",
+    registrationEndsAt: "2026-09-29T16:00:00+08:00",
+    eventEndsAt: "2026-10-03T16:30:00+08:00",
     registrationWindow: "即日起～9/29（二）16:00",
     registrationNote: "止，請至桃園市教師研習系統以課程編號報名。"
   },
@@ -188,6 +193,9 @@ const workshopData = Object.freeze([
     hours: "4 小時",
     registrationMode: "course",
     courseCode: "Z00002-260900001",
+    registrationStartsAt: "2026-09-04T00:00:00+08:00",
+    registrationEndsAt: "2026-10-08T16:00:00+08:00",
+    eventEndsAt: "2026-10-17T16:30:00+08:00",
     registrationWindow: "即日起～10/8（四）16:00",
     registrationNote: "止，請至桃園市教師研習系統以課程編號報名。"
   }
@@ -252,6 +260,9 @@ window.SITE_CONFIG = Object.freeze({
   activityTrainingHours: "3 小時",
   activityRegistrationUrl: "https://reurl.cc/Ym4k44",
   activityInfoUrl: "https://reurl.cc/OQYEp7",
+  activityRegistrationStartsAt: "2026-09-07T13:00:00+08:00",
+  activityRegistrationEndsAt: "2026-09-16T13:00:00+08:00",
+  activityEventEndsAt: "2026-10-03T11:30:00+08:00",
   activityCancelDeadline: "9/21（一）前",
   activitySchedule: activityScheduleData,
   activityReminders: activityReminderData,

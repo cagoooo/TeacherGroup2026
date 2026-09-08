@@ -28,7 +28,7 @@ Google 試算表只會有：
 
 ## 更新後首次啟用
 
-1. `clasp push -f -u school` 只推 3 個 `.gs`、`Dashboard.html` 與 manifest。`Dashboard.html` 是 GAS HtmlService 管理模板，與 GitHub Pages 前端檔分開；刻意列入 `.claspignore` 白名單。
+1. `clasp -u school push -f` 只推 3 個 `.gs`、`Dashboard.html` 與 manifest。`school` 固定對應學校帳號 `ipad@mail2.smes.tyc.edu.tw`；`Dashboard.html` 是 GAS HtmlService 管理模板，與 GitHub Pages 前端檔分開；刻意列入 `.claspignore` 白名單。
 2. 執行 `initializeOperations`，由 Google 確認部署者本人。第一次需補充同意 Drive（私人備份）、ScriptApp（每日排程）與 email（管理登入）權限；不新增 Gmail 寄信權限。
 3. 初始化會設定擁有者、確認原試算表為私人、建立管理工作表及單一每日排程，並實做一次備份與隔離復原演練。重跑不重複安裝觸發器，但會多產生一份備份及演練副本。
 4. 初始化成功後，建立不可變版本並 `update-deployment` 至既有正式 deployment。OAuth 尚未完成時，保留既有正式部署版本。
@@ -72,12 +72,12 @@ Google 試算表只會有：
 
 所有 CLASP 指令請先切換到本專案 `gas/` 目錄執行；不要在 repository 根目錄以空 `rootDir` 的 `.clasp.json` 推送，避免遠端檔名意外多出 `gas/` 前綴，導致 HtmlService 無法找到 `Dashboard`。`clasp status` 應顯示 `Admin.gs`、`Code.gs`、`Operations.gs`、`Dashboard.html` 與 `appsscript.json`。
 
-既有 Web App 更新時，先用 `clasp list-deployments <scriptId>` 確認 deployment ID 屬於同一支 script，再依序執行：
+既有 Web App 更新時，先用 `clasp -u school show-authorized-user` 核對學校帳號，再用 `clasp -u school list-deployments <scriptId>` 確認 deployment ID 屬於同一支 script，再依序執行：
 
 ```text
-clasp push -f
-clasp create-version "更新說明"
-clasp update-deployment <deploymentId> -V <versionNumber> -d "更新說明"
+clasp -u school push -f
+clasp -u school create-version "更新說明"
+clasp -u school update-deployment <deploymentId> -V <versionNumber> -d "更新說明"
 ```
 
 不可用 `create-deployment` 取代既有部署，否則會產生新的 `/exec` 網址。

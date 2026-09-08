@@ -19,6 +19,7 @@ const siteDataSource = read("site-data.js");
 const manifest = JSON.parse(read("site.webmanifest"));
 const versionData = JSON.parse(read("version.json"));
 const sw = read("sw.js");
+const appSource = read("app.js");
 const pwaHealth = read("pwa-health.html");
 const usageStatsPage = read("usage-stats.html");
 const usageStatsSource = read("usage-stats.js");
@@ -43,6 +44,12 @@ for (const imageTag of html.matchAll(/<img\b[^>]*>/gi)) {
 }
 assert(css.includes(":focus-visible"), "樣式表必須保留鍵盤 focus-visible 樣式");
 assert(css.includes("@media (max-width: 620px)"), "樣式表必須保留手機版斷點");
+assert(css.includes("@media (prefers-reduced-motion: reduce)"), "樣式表必須提供減少動態效果設定");
+assert(css.includes("scroll-margin-top"), "頁內錨點必須保留 sticky header 的滾動間距");
+assert(html.includes('class="mobile-quick-nav"'), "首頁缺少手機快速操作列");
+assert(html.includes('class="back-to-top"'), "首頁缺少回到頁首入口");
+assert(html.includes("data-activity-registration-status"), "首頁缺少活動報名狀態容器");
+assert(html.includes("data-activity-registration-action"), "首頁缺少活動報名狀態控制入口");
 assert(config.annualFee === "1,200", "annualFee 必須是 1,200");
 assert(config.recreationFee === "300", "recreationFee 必須是 300");
 assert(config.currentCollectionTotal === "1,500", "currentCollectionTotal 必須是 1,500");
@@ -51,6 +58,15 @@ assert(Array.isArray(config.activityReminders) && config.activityReminders.lengt
 assert(Array.isArray(config.workshops) && config.workshops.length === 3, "多元研習資料應有 3 筆");
 assert(Array.isArray(config.quickEntries) && config.quickEntries.length === 4, "快速入口資料應有 4 筆");
 assert(Array.isArray(config.announcements) && config.announcements.length === 3, "公告資料應有 3 筆");
+for (const key of ["activityRegistrationStartsAt", "activityRegistrationEndsAt", "activityEventEndsAt"]) {
+  assert(!Number.isNaN(new Date(config[key]).getTime()), `活動狀態欄位日期格式錯誤：${key}`);
+}
+for (const workshop of config.workshops ?? []) {
+  const startsAt = new Date(workshop.registrationStartsAt);
+  const endsAt = new Date(workshop.registrationEndsAt);
+  assert(!Number.isNaN(startsAt.getTime()) && !Number.isNaN(endsAt.getTime()) && startsAt < endsAt, `研習報名日期順序錯誤：${workshop.id}`);
+  if (workshop.eventEndsAt) assert(new Date(workshop.eventEndsAt) > endsAt, `研習活動結束日期錯誤：${workshop.id}`);
+}
 assert(config.usageAnalytics?.provider === "gas-sheets", "使用統計後端必須標示為 gas-sheets");
 assert(typeof config.usageAnalytics?.enabled === "boolean", "使用統計後端必須明確標示 enabled");
 assert(config.usageAnalytics?.enabled === false || /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/.test(config.usageAnalytics?.endpoint ?? ""), "啟用中央統計時必須使用 GAS Web App /exec 網址");
@@ -130,6 +146,10 @@ assert(brandAssets.assets?.favicon === "assets/favicon.svg", "品牌資產 manif
 assert(gasManifest.webapp?.executeAs === "USER_DEPLOYING" && gasManifest.webapp?.access === "ANYONE_ANONYMOUS", "GAS Web App manifest 必須以部署者執行並允許匿名寫入");
 assert(gasCode.includes("ALLOWED_EVENTS") && gasCode.includes("initializeBackend") && gasCode.includes("LockService"), "GAS 後端缺少固定事件白名單、初始化或並發鎖");
 assert(!gasCode.includes("Session.getActiveUser") && !gasCode.includes("Session.getEffectiveUser") && !gasCode.includes("e.parameter.userAgent") && !gasCode.includes("e.parameter.ip"), "匿名接收程式不可讀取訪客身分；管理登入限定 Operations.gs");
+for (const stateLabel of ["尚未開放", "報名中", "報名已截止", "活動已結束"]) {
+  assert(appSource.includes(stateLabel), `前端缺少活動狀態：${stateLabel}`);
+}
+assert(appSource.includes("Escape"), "選單必須支援 Escape 關閉並回復焦點");
 
 const ogPath = resolve(root, "assets", "og-image.png");
 assert(existsSync(ogPath), "找不到 assets/og-image.png");
