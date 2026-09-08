@@ -1,0 +1,45 @@
+{
+  "generatedAt": "2026-09-08T00:24:51.899Z",
+  "entries": [
+    {
+      "id": "renewal",
+      "title": "舊會員續會",
+      "url": "https://cagoooo.github.io/TeacherGroup2026/#renewal",
+      "asset": "assets/qr-renewal.png",
+      "width": 511,
+      "height": 511,
+      "errorCorrectionLevel": "H",
+      "decoded": true
+    },
+    {
+      "id": "joining",
+      "title": "新進／中斷會員",
+      "url": "https://cagoooo.github.io/TeacherGroup2026/#joining",
+      "asset": "assets/qr-joining.png",
+      "width": 511,
+      "height": 511,
+      "errorCorrectionLevel": "H",
+      "decoded": true
+    },
+    {
+      "id": "activities",
+      "title": "活動宣導",
+      "url": "https://cagoooo.github.io/TeacherGroup2026/#activities",
+      "asset": "assets/qr-activities.png",
+      "width": 511,
+      "height": 511,
+      "errorCorrectionLevel": "H",
+      "decoded": true
+    },
+    {
+      "id": "contact",
+      "title": "聯絡方式",
+      "url": "https://cagoooo.github.io/TeacherGroup2026/#contact",
+      "asset": "assets/qr-contact.png",
+      "width": 511,
+      "height": 511,
+      "errorCorrectionLevel": "H",
+      "decoded": true
+    }
+  ]
+}

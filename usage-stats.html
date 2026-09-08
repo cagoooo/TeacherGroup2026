@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#063b84">
+    <meta name="robots" content="noindex">
+    <link rel="icon" href="assets/favicon.ico" sizes="any">
+    <title>本機使用統計｜桃園市教育產業工會</title>
+    <style>
+      :root { font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif; color: #17233a; background: #fffaf0; }
+      body { margin: 0; padding: 32px 18px; }
+      main { width: min(760px, 100%); margin: 0 auto; padding: 30px; border: 1px solid #d8e0eb; border-radius: 22px; background: #fff; box-shadow: 0 14px 34px rgba(7, 40, 90, .1); }
+      a { color: #063b84; font-weight: 800; }
+      h1 { color: #063b84; line-height: 1.3; }
+      .privacy-note { padding: 15px 17px; border-left: 4px solid #168657; color: #24412f; background: #eaf8ef; line-height: 1.65; }
+      table { width: 100%; margin: 24px 0; border-collapse: collapse; }
+      th, td { padding: 11px 9px; border-bottom: 1px solid #d8e0eb; text-align: left; }
+      th { color: #516078; }
+      td:last-child { width: 140px; color: #063b84; font-family: ui-monospace, "Cascadia Mono", monospace; font-weight: 900; text-align: right; }
+      .actions { display: flex; flex-wrap: wrap; gap: 10px; }
+      button, .button { display: inline-flex; min-height: 42px; align-items: center; justify-content: center; padding: 9px 14px; border: 1px solid #063b84; border-radius: 9px; color: #fff; background: #063b84; font: inherit; font-weight: 800; text-decoration: none; cursor: pointer; }
+      button.secondary, .button.secondary { color: #063b84; background: #fff; }
+      button:focus-visible, a:focus-visible { outline: 3px solid #f4b622; outline-offset: 3px; }
+      .note { color: #516078; font-size: .9rem; line-height: 1.65; }
+      @media (max-width: 520px) { main { padding: 23px; } th, td { font-size: .9rem; } td:last-child { width: 80px; } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p><a href="./">← 回到會員服務首頁</a></p>
+      <h1>本機使用統計</h1>
+      <p class="privacy-note">這是 ROADMAP-11 的第一階段：統計只保存在目前這台裝置的瀏覽器中，不會上傳、不使用 Cookie、不記錄 IP，也不收集姓名、電話、會員名冊或付款資料。它適合做現場裝置的入口檢查；若未來要做跨裝置彙整，需另外確認服務、告知與保存期限。</p>
+      <p id="updated-at" class="note">資料讀取中……</p>
+      <table>
+        <thead><tr><th scope="col">入口事件</th><th scope="col">本機次數</th></tr></thead>
+        <tbody id="stats-body"></tbody>
+      </table>
+      <div class="actions">
+        <button type="button" id="export-stats">匯出匿名 JSON</button>
+        <button type="button" id="clear-stats" class="secondary">清除本機統計</button>
+        <a class="button secondary" href="./pwa-health.html">查看 PWA 狀態</a>
+      </div>
+      <p class="note">匯出的 JSON 只包含事件名稱、次數與時間戳，不包含個人識別資訊。清除瀏覽器網站資料也會一併清除統計。</p>
+    </main>
+    <script src="usage-stats.js?v=2026.09.08-2"></script>
+    <script>
+      (() => {
+        const usage = window.TeacherGroupUsage;
+        const labels = {
+          page_view: '頁面瀏覽',
+          quick_entry_renewal: '快速入口｜舊會員續會',
+          quick_entry_joining: '快速入口｜新進／中斷會員',
+          quick_entry_activities: '快速入口｜活動宣導',
+          quick_entry_contact: '快速入口｜聯絡方式',
+          announcement_workshops: '公告｜學校多元研習',
+          announcement_activities: '公告｜928 健行活動',
+          announcement_membership: '公告｜會員服務',
+          print_quick_entry: '列印 QR 導覽'
+        };
+        const render = () => {
+          const stats = usage.snapshot();
+          document.getElementById('updated-at').textContent = stats.lastUpdatedAt ? `最近更新：${stats.lastUpdatedAt}` : '目前尚未有統計事件。';
+          document.getElementById('stats-body').innerHTML = usage.eventNames.map((name) => `<tr><th scope="row">${labels[name] || name}</th><td>${Number(stats.events[name] || 0)}</td></tr>`).join('');
+        };
+        document.getElementById('export-stats').addEventListener('click', () => {
+          const blob = new Blob([usage.exportJson()], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = 'teachergroup-local-usage.json';
+          link.click();
+          URL.revokeObjectURL(url);
+        });
+        document.getElementById('clear-stats').addEventListener('click', () => {
+          usage.clear();
+          render();
+        });
+        render();
+      })();
+    </script>
+  </body>
+</html>

@@ -48,11 +48,31 @@ The workshop section is grounded in `活動宣導內容\3\公文內容.pdf` and 
 
 - [P1, fixed] 社群分享圖的費用視覺已同步本次 1,500 元收費明細。
   - Fix: 以 `scripts/generate-og-image.mjs` 搭配本機繁中文字型重新產製 `assets/og-image.png`，明確呈現「工會會費／入會費 1,200 元＋校內康樂費 300 元＝1,500 元」。
-  - Post-fix evidence: 檔案為真正 PNG，尺寸 1200×630、檔案大小約 581 KB；`index.html` 的 `og:image`、`secure_url` 與 Twitter image 均使用 `v=2026.09.08-1`，`npm run check:site` 通過。
+  - Post-fix evidence: 檔案為真正 PNG，尺寸 1200×630、檔案大小約 581 KB；`index.html` 的 `og:image`、`secure_url` 與 Twitter image 均使用 `v=2026.09.08-2`，`npm run check:site` 通過。
 
 - [P2, fixed] 發布前內容、版本與第一階段無障礙護欄已自動化。
   - Fix: 新增 `scripts/check-site.mjs` 與 `.github/workflows/site-check.yml`，檢查 1,200＋300＝1,500 元、角色分工、錯誤校名、舊名冊說明、版本一致性、OG 圖格式、頁內連結、語系、viewport、skip link、main landmark、h1、圖片替代文字、focus-visible 與手機斷點。
   - Post-fix evidence: 本機 `npm run check:site` 通過；GitHub Actions 會在 push／pull request 執行相同檢查。
+
+- [P2, fixed] 快速入口需要同時適合手機操作與紙本導覽，且 QR 不得攜帶會員資料。
+  - Fix: 新增續會、加入、活動、聯絡四個公開錨點入口；QR 由腳本產製並逐張解碼驗證，列印樣式只保留快速入口區，保留鍵盤 focus 與可讀文字連結。
+  - Post-fix evidence: `npm run generate:qr` 產製 4 張 QR，`qr-manifest.json` 記錄公開網址與解碼結果；`npm run check:site` 會阻擋個人 query 參數與失效入口。
+
+- [P2, fixed] 活動與公告若長期留在首頁，可能讓使用者誤讀已過期日期。
+  - Fix: 公告資料加入開始／封存日期、置頂與優先序，畫面分為即將開始、進行中與已封存，頂端通知只取目前有效公告。
+  - Post-fix evidence: `app.js` 的狀態函式可依測試日期產生 upcoming／active／archived，靜態檢查會驗證日期順序與對應頁內錨點。
+
+- [P2, fixed] 網路不穩時需要知道目前內容與快取版本，並能在新版可用時更新。
+  - Fix: 新增 `pwa-health.html`、`offline.html` 與 Service Worker 快取健康資訊；預載首頁、狀態頁、QR 與品牌資產，保留更新提示與版本查詢。
+  - Post-fix evidence: `sw.js` 的 `PRECACHE_ASSETS` 包含離線頁、快速入口 QR、`brand-assets.json`；版本檔仍採 no-store 網路優先。
+
+- [P2, fixed] 使用量需求不得變成會員追蹤或第三方個資外洩。
+  - Fix: `usage-stats.js` 只在瀏覽器 localStorage 保存頁面／入口的匿名次數，提供匯出與清除，不使用 Cookie、外部分析服務、姓名、電話、名冊或付款資訊。
+  - Post-fix evidence: `usage-stats.html` 顯示資料範圍與清除操作；`npm run check:site` 會檢查統計程式沒有 `fetch`、`sendBeacon` 或 XHR。
+
+- [P3, fixed for provisional phase] 品牌圖示需要有可追溯的資產索引，避免把未授權素材當作正式工會 Logo。
+  - Fix: 新增 `brand-assets.json`，索引 favicon、PWA icon 與 OG 圖，並明確記錄 `officialLogoAuthorized: false`。
+  - Post-fix evidence: 靜態檢查驗證 manifest 狀態與資產路徑；正式 Logo／QR／新版海報仍待取得授權後再更新。
 
 目前沒有已知的 P0、P1 或 P2 開放發現；ROADMAP-09 的完整瀏覽器 screenshot／Lighthouse 自動化仍是可選的第二階段，不是目前公開版本的阻塞問題。
 

@@ -5,9 +5,12 @@
   "type": "module",
   "scripts": {
     "check:site": "node scripts/check-site.mjs",
-    "generate:og": "node scripts/generate-og-image.mjs"
+    "generate:og": "node scripts/generate-og-image.mjs",
+    "generate:qr": "node scripts/generate-qr-assets.mjs"
   },
   "devDependencies": {
-    "@napi-rs/canvas": "1.0.8"
+    "@napi-rs/canvas": "1.0.8",
+    "jsqr": "^1.4.0",
+    "qrcode": "^1.5.4"
   }
 }

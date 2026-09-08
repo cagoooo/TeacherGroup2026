@@ -19,6 +19,12 @@ const siteDataSource = read("site-data.js");
 const manifest = JSON.parse(read("site.webmanifest"));
 const versionData = JSON.parse(read("version.json"));
 const sw = read("sw.js");
+const pwaHealth = read("pwa-health.html");
+const usageStatsPage = read("usage-stats.html");
+const usageStatsSource = read("usage-stats.js");
+const offlinePage = read("offline.html");
+const brandAssets = JSON.parse(read("brand-assets.json"));
+const qrManifest = JSON.parse(read("assets/qr-manifest.json"));
 const sandbox = { window: {} };
 vm.runInNewContext(siteDataSource, sandbox, { filename: "site-data.js" });
 const config = sandbox.window.SITE_CONFIG;
@@ -30,7 +36,7 @@ assert(html.includes('class="skip-link" href="#main-content"'), "首頁缺少跳
 assert(html.includes('<main id="main-content">'), "首頁缺少主要內容 landmark");
 assert((html.match(/<h1\b/g) ?? []).length === 1, "首頁應保留單一 h1 標題");
 for (const imageTag of html.matchAll(/<img\b[^>]*>/gi)) {
-  assert(/\balt="[^"]+"/i.test(imageTag[0]), `圖片缺少替代文字：${imageTag[0]}`);
+  assert(/\balt="[^"]*"/i.test(imageTag[0]), `圖片缺少替代文字屬性：${imageTag[0]}`);
 }
 assert(css.includes(":focus-visible"), "樣式表必須保留鍵盤 focus-visible 樣式");
 assert(css.includes("@media (max-width: 620px)"), "樣式表必須保留手機版斷點");
@@ -40,6 +46,19 @@ assert(config.currentCollectionTotal === "1,500", "currentCollectionTotal 必須
 assert(Array.isArray(config.activitySchedule) && config.activitySchedule.length === 4, "活動流程資料應有 4 筆");
 assert(Array.isArray(config.activityReminders) && config.activityReminders.length === 5, "活動提醒資料應有 5 筆");
 assert(Array.isArray(config.workshops) && config.workshops.length === 3, "多元研習資料應有 3 筆");
+assert(Array.isArray(config.quickEntries) && config.quickEntries.length === 4, "快速入口資料應有 4 筆");
+assert(Array.isArray(config.announcements) && config.announcements.length === 3, "公告資料應有 3 筆");
+
+for (const entry of config.quickEntries ?? []) {
+  assert(entry.qrUrl?.startsWith("https://cagoooo.github.io/TeacherGroup2026/"), `QR 必須指向本站公開網址：${entry.id}`);
+  assert(!/[?&](name|email|phone|member|account|roster)=/i.test(entry.qrUrl ?? ""), `QR 不可包含個資參數：${entry.id}`);
+  assert(entry.href?.startsWith("#"), `快速入口必須使用頁內錨點：${entry.id}`);
+}
+
+for (const announcement of config.announcements ?? []) {
+  assert(new Date(announcement.startsAt) < new Date(announcement.archiveAt), `公告日期順序錯誤：${announcement.id}`);
+  assert(announcement.href?.startsWith("#"), `公告必須使用頁內錨點：${announcement.id}`);
+}
 
 for (const match of html.matchAll(/data-value="([^"]+)"/g)) {
   const key = match[1];
@@ -50,9 +69,14 @@ for (const requiredText of [
   "校內會員專屬康樂費",
   "本次收費明細",
   "工會款由財務長統一匯款",
+  "手機與列印快速入口",
+  "最新公告與歷史宣導",
+  "只包含公開頁面連結",
   "data-render-list=\"activity-schedule\"",
   "data-render-list=\"activity-reminders\"",
-  "data-render-list=\"workshops\""
+  "data-render-list=\"workshops\"",
+  "data-render-list=\"quick-entries\"",
+  "data-render-list=\"announcements\""
 ]) {
   assert(html.includes(requiredText), `首頁缺少必要內容：${requiredText}`);
 }
@@ -72,7 +96,7 @@ assert(versionData.version, "version.json 缺少 version");
 assert(sw.includes(`const BUILD_VERSION = '${versionData.version}';`), "sw.js 版本與 version.json 不一致");
 assert(html.includes(`window.SITE_VERSION = '${versionData.version}';`), "index.html SITE_VERSION 與 version.json 不一致");
 
-const versionedAssetNames = ["styles.css", "site-data.js", "app.js", "sw-register.js", "assets/og-image.png"];
+const versionedAssetNames = ["styles.css", "site-data.js", "usage-stats.js", "app.js", "sw-register.js", "assets/og-image.png"];
 for (const assetName of versionedAssetNames) {
   assert(html.includes(`${assetName}?v=${versionData.version}`), `資源缺少版本參數：${assetName}`);
 }
@@ -82,6 +106,16 @@ assert(ogImageMatch && ogImageMatch[1].startsWith("https://"), "og:image 必須�
 assert(ogImageMatch?.[1].includes(`?v=${versionData.version}`), "og:image 缺少目前版本快取參數");
 assert(html.includes('<meta property="og:image:width" content="1200">'), "OG 圖缺少 1200 寬度標記");
 assert(html.includes('<meta property="og:image:height" content="630">'), "OG 圖缺少 630 高度標記");
+assert(html.includes(`usage-stats.js?v=${versionData.version}`), "首頁缺少版本化 usage-stats.js");
+
+assert(pwaHealth.includes(`window.SITE_VERSION = '${versionData.version}';`), "pwa-health.html 版本與 version.json 不一致");
+assert(usageStatsPage.includes(`usage-stats.js?v=${versionData.version}`), "usage-stats.html 缺少版本化 usage-stats.js");
+assert(offlinePage.includes("返回會員服務首頁"), "offline.html 缺少回首頁入口");
+assert(sw.includes("'./offline.html'") && sw.includes("'./pwa-health.html'") && sw.includes("'./usage-stats.html'"), "Service Worker 缺少 PWA／離線頁預快取");
+assert(sw.includes("caches.match('./offline.html')"), "Service Worker 缺少離線 fallback");
+assert(!usageStatsSource.includes("sendBeacon") && !usageStatsSource.includes("XMLHttpRequest"), "本機使用統計不可主動傳送資料");
+assert(brandAssets.officialLogoAuthorized === false, "尚未取得正式 logo 授權時，brand-assets.json 必須保持 provisional");
+assert(brandAssets.assets?.favicon === "assets/favicon.svg", "品牌資產 manifest 必須指向既有 favicon");
 
 const ogPath = resolve(root, "assets", "og-image.png");
 assert(existsSync(ogPath), "找不到 assets/og-image.png");
@@ -90,6 +124,24 @@ if (existsSync(ogPath)) {
   assert(image.length < 8 * 1024 * 1024, "OG 圖檔案不可超過 8 MB");
   assert(image.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])), "OG 圖必須是 PNG");
   assert(image.readUInt32BE(16) === 1200 && image.readUInt32BE(20) === 630, "OG 圖尺寸必須是 1200×630");
+}
+
+const qrEntriesById = new Map((qrManifest.entries ?? []).map((entry) => [entry.id, entry]));
+assert(qrManifest.entries?.length === config.quickEntries?.length, "QR manifest 與快速入口數量不一致");
+for (const entry of config.quickEntries ?? []) {
+  const qrEntry = qrEntriesById.get(entry.id);
+  assert(qrEntry?.decoded === true, `QR 尚未完成解碼驗證：${entry.id}`);
+  assert(qrEntry?.url === entry.qrUrl, `QR 內容與資料來源不一致：${entry.id}`);
+  const qrPath = resolve(root, entry.qrAsset);
+  assert(existsSync(qrPath), `找不到 QR 圖：${entry.qrAsset}`);
+  if (existsSync(qrPath)) {
+    const qrImage = readFileSync(qrPath);
+    assert(qrImage.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])), `QR 必須是 PNG：${entry.id}`);
+    const qrWidth = qrImage.readUInt32BE(16);
+    const qrHeight = qrImage.readUInt32BE(20);
+    assert(qrWidth === qrHeight && qrWidth >= 256, `QR 尺寸需為正方形且至少 256×256：${entry.id}`);
+    assert(qrEntry.width === qrWidth && qrEntry.height === qrHeight, `QR manifest 尺寸不一致：${entry.id}`);
+  }
 }
 
 const ids = new Set([...html.matchAll(/id="([^"]+)"/g)].map((match) => match[1]));

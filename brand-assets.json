@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "status": "provisional-site-brand",
+  "officialLogoAuthorized": false,
+  "note": "目前使用網站專用圖示與既有配色；正式工會 logo、QR 或新版海報素材取得授權後，才替換為正式品牌資產。",
+  "palette": {
+    "navy": "#063b84",
+    "green": "#168657",
+    "gold": "#f4b622",
+    "red": "#d9361e",
+    "cream": "#fffaf0"
+  },
+  "assets": {
+    "favicon": "assets/favicon.svg",
+    "pwaAnyIcon192": "assets/icon-192.png",
+    "pwaAnyIcon512": "assets/icon-512.png",
+    "ogImage": "assets/og-image.png"
+  }
+}

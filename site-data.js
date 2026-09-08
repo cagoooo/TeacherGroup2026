@@ -33,6 +33,90 @@ const activityReminderData = Object.freeze([
   { text: "未請假缺席者，未來 4 個月內不得參加本會任何研習及活動；攜幼童者請全程注意孩童安全。" }
 ]);
 
+const publicSiteUrl = "https://cagoooo.github.io/TeacherGroup2026/";
+
+const quickEntryData = Object.freeze([
+  {
+    id: "renewal",
+    title: "舊會員續會",
+    description: "查看本次 1,500 元收費與續會禮",
+    href: "#renewal",
+    qrUrl: `${publicSiteUrl}#renewal`,
+    qrAsset: "assets/qr-renewal.png",
+    icon: "bi-arrow-repeat",
+    tone: "blue"
+  },
+  {
+    id: "joining",
+    title: "新進／中斷會員",
+    description: "先洽支會長，由校內協助入會",
+    href: "#joining",
+    qrUrl: `${publicSiteUrl}#joining`,
+    qrAsset: "assets/qr-joining.png",
+    icon: "bi-person-plus-fill",
+    tone: "green"
+  },
+  {
+    id: "activities",
+    title: "活動宣導",
+    description: "查看 928 健行活動與報名提醒",
+    href: "#activities",
+    qrUrl: `${publicSiteUrl}#activities`,
+    qrAsset: "assets/qr-activities.png",
+    icon: "bi-sun-fill",
+    tone: "gold"
+  },
+  {
+    id: "contact",
+    title: "聯絡方式",
+    description: "支會長與工會秘書處聯繫入口",
+    href: "#contact",
+    qrUrl: `${publicSiteUrl}#contact`,
+    qrAsset: "assets/qr-contact.png",
+    icon: "bi-headset",
+    tone: "red"
+  }
+]);
+
+const announcementData = Object.freeze([
+  {
+    id: "workshops",
+    title: "9、10 月學校多元研習",
+    kind: "研習公告",
+    summary: "三場研習依正式計畫辦理，請依 Google 表單或課程編號報名。",
+    href: "#workshops",
+    startsAt: "2026-09-04T00:00:00+08:00",
+    archiveAt: "2026-10-18T00:00:00+08:00",
+    dateLabel: "115 年 9 月 4 日公告",
+    priority: 100,
+    pinned: true
+  },
+  {
+    id: "activities",
+    title: "陽光親子 928 健行活動",
+    kind: "活動公告",
+    summary: "10 月 3 日崙坪文化地景園區健行、集章與兌換活動伴手禮。",
+    href: "#activities",
+    startsAt: "2026-09-03T00:00:00+08:00",
+    archiveAt: "2026-10-04T00:00:00+08:00",
+    dateLabel: "115 年 9 月 3 日公告",
+    priority: 90,
+    pinned: true
+  },
+  {
+    id: "membership",
+    title: "116 年度會員服務",
+    kind: "會員公告",
+    summary: "本次石門國小會員收費為 1,200 元＋300 元，合計 1,500 元。",
+    href: "#renewal",
+    startsAt: "2026-09-01T00:00:00+08:00",
+    archiveAt: "2027-01-01T00:00:00+08:00",
+    dateLabel: "116 年度",
+    priority: 70,
+    pinned: false
+  }
+]);
+
 const workshopData = Object.freeze([
   {
     id: "film",
@@ -137,6 +221,12 @@ window.SITE_CONFIG = Object.freeze({
   phone: "03-458-3860",
   fax: "03-458-3672",
   email: "teuniontw@gmail.com",
+  publicSiteUrl,
+  quickEntries: quickEntryData,
+  announcements: announcementData,
+  pwaHealthUrl: "pwa-health.html",
+  usageStatsUrl: "usage-stats.html",
+  brandAssetManifest: "brand-assets.json",
   activityTitle: "陽光親子 928 健行活動",
   activitySeries: "第一波｜教師節活動",
   activityDateLabel: "115 年 10 月 3 日（星期六）",

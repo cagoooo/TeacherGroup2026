@@ -18,6 +18,11 @@
     return /^(https?:|mailto:|#)/i.test(href) ? escapeHtml(href) : "#";
   };
 
+  const safeAsset = (value) => {
+    const asset = String(value ?? "");
+    return /^assets\/[a-z0-9._/-]+$/i.test(asset) ? escapeHtml(asset) : "assets/favicon.svg";
+  };
+
   document.querySelectorAll("[data-value]").forEach((element) => {
     const value = config[element.dataset.value];
     if (value !== undefined) element.textContent = value;
@@ -89,9 +94,96 @@
     }).join("");
   };
 
+  const renderQuickEntries = () => {
+    const target = document.querySelector('[data-render-list="quick-entries"]');
+    if (!target || !Array.isArray(config.quickEntries)) return;
+    target.innerHTML = config.quickEntries.map((entry) => `
+      <article class="quick-entry-card quick-entry-card-${escapeHtml(entry.tone)}">
+        <a class="quick-entry-link" href="${safeHref(entry.href)}" data-usage-event="quick_entry_${escapeHtml(entry.id)}">
+          <span class="quick-entry-icon" aria-hidden="true"><i class="bi ${escapeHtml(entry.icon)}"></i></span>
+          <span class="quick-entry-copy"><strong>${escapeHtml(entry.title)}</strong><small>${escapeHtml(entry.description)}</small></span>
+        </a>
+        <img class="quick-entry-qr" src="${safeAsset(entry.qrAsset)}" width="176" height="176" alt="掃描後前往${escapeHtml(entry.title)}說明">
+      </article>
+    `).join("");
+  };
+
+  const getAnnouncementState = (announcement, now = new Date()) => {
+    const start = new Date(announcement.startsAt);
+    const archive = new Date(announcement.archiveAt);
+    if (now < start) return { key: "upcoming", label: "即將開始" };
+    if (now >= archive) return { key: "archived", label: "已封存" };
+    return { key: "active", label: announcement.pinned ? "置頂・進行中" : "進行中" };
+  };
+
+  const sortAnnouncements = (items) => [...items].sort((left, right) => {
+    const stateRank = { active: 0, upcoming: 1, archived: 2 };
+    const rankDifference = stateRank[left.state.key] - stateRank[right.state.key];
+    if (rankDifference) return rankDifference;
+    if (left.item.pinned !== right.item.pinned) return left.item.pinned ? -1 : 1;
+    return (right.item.priority ?? 0) - (left.item.priority ?? 0);
+  });
+
+  const renderAnnouncements = () => {
+    const target = document.querySelector('[data-render-list="announcements"]');
+    if (!target || !Array.isArray(config.announcements)) return;
+
+    const items = sortAnnouncements(config.announcements.map((item) => ({
+      item,
+      state: getAnnouncementState(item)
+    })));
+
+    target.innerHTML = items.map(({ item, state }) => `
+      <article class="announcement-card ${item.pinned ? "announcement-card-pinned" : ""} ${state.key === "archived" ? "announcement-card-archived" : ""}" data-announcement-state="${state.key}">
+        <div class="announcement-card-top"><span class="announcement-status">${escapeHtml(state.label)}</span><span>${escapeHtml(item.kind)}</span></div>
+        <h3><a href="${safeHref(item.href)}" data-usage-event="announcement_${escapeHtml(item.id)}">${escapeHtml(item.title)}</a></h3>
+        <p>${escapeHtml(item.summary)}</p>
+        <small>${escapeHtml(item.dateLabel)}</small>
+      </article>
+    `).join("");
+
+    const empty = document.querySelector(".announcement-empty");
+    if (empty) {
+      const archivedCount = items.filter(({ state }) => state.key === "archived").length;
+      empty.hidden = archivedCount > 0;
+      empty.textContent = archivedCount > 0 ? "已封存公告仍保留在上方供查閱。" : "目前沒有已封存的公告。";
+    }
+  };
+
+  const renderAnnouncementStrip = () => {
+    const target = document.querySelector('[data-render-list="announcement-strip"]');
+    if (!target || !Array.isArray(config.announcements)) return;
+    const active = sortAnnouncements(config.announcements.map((item) => ({
+      item,
+      state: getAnnouncementState(item)
+    }))).find(({ state }) => state.key !== "archived");
+    if (!active) return;
+    target.innerHTML = `
+      <span><i class="bi bi-megaphone-fill" aria-hidden="true"></i> 最新公告｜${escapeHtml(active.item.title)}</span>
+      <a href="${safeHref(active.item.href)}" data-usage-event="announcement_${escapeHtml(active.item.id)}">查看公告 <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+    `;
+  };
+
+  const bindUsageEvents = () => {
+    document.querySelectorAll("[data-usage-event]").forEach((element) => {
+      element.addEventListener("click", () => {
+        window.TeacherGroupUsage?.record(element.dataset.usageEvent);
+      });
+    });
+  };
+
   renderActivitySchedule();
   renderActivityReminders();
   renderWorkshops();
+  renderQuickEntries();
+  renderAnnouncements();
+  renderAnnouncementStrip();
+  bindUsageEvents();
+
+  document.querySelector("[data-print-quick-entry]")?.addEventListener("click", () => {
+    window.TeacherGroupUsage?.record("print_quick_entry");
+    window.print();
+  });
 
   const button = document.querySelector(".menu-button");
   const nav = document.querySelector(".site-nav");

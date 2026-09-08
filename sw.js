@@ -1,8 +1,15 @@
-const BUILD_VERSION = '2026.09.08-1';
+const BUILD_VERSION = '2026.09.08-2';
 const CACHE_NAME = `teachergroup-${BUILD_VERSION}`;
 const PRECACHE_ASSETS = [
+  './',
+  './index.html',
+  './version.json',
+  './offline.html',
+  './pwa-health.html',
+  './usage-stats.html',
   `./styles.css?v=${BUILD_VERSION}`,
   `./site-data.js?v=${BUILD_VERSION}`,
+  `./usage-stats.js?v=${BUILD_VERSION}`,
   `./app.js?v=${BUILD_VERSION}`,
   `./sw-register.js?v=${BUILD_VERSION}`,
   './assets/favicon.svg',
@@ -13,6 +20,12 @@ const PRECACHE_ASSETS = [
   './assets/icon-512.png',
   './assets/icon-192-maskable.png',
   './assets/icon-512-maskable.png',
+  './assets/qr-renewal.png',
+  './assets/qr-joining.png',
+  './assets/qr-activities.png',
+  './assets/qr-contact.png',
+  './assets/qr-manifest.json',
+  './brand-assets.json',
   './site.webmanifest'
 ];
 
@@ -84,7 +97,7 @@ self.addEventListener('fetch', (event) => {
           }
           return response;
         })
-        .catch(() => caches.match(request).then((cached) => cached || caches.match('./index.html').then((fallback) => fallback || Response.error())))
+        .catch(() => caches.match(request).then((cached) => cached || caches.match('./index.html').then((fallback) => fallback || caches.match('./offline.html').then((offline) => offline || Response.error()))))
     );
     return;
   }

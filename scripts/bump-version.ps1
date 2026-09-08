@@ -32,14 +32,19 @@ $sw = [System.IO.File]::ReadAllText($swPath, [System.Text.Encoding]::UTF8)
 $sw = [regex]::Replace($sw, "const BUILD_VERSION = '[^']*';", "const BUILD_VERSION = '$version';")
 [System.IO.File]::WriteAllText($swPath, $sw, $encoding)
 
-$indexPath = Join-Path $root "index.html"
-$index = [System.IO.File]::ReadAllText($indexPath, [System.Text.Encoding]::UTF8)
-$index = [regex]::Replace($index, 'window\.SITE_VERSION\s*=\s*[^;]+;', "window.SITE_VERSION = '$version';")
-foreach ($asset in @("styles\.css", "site-data\.js", "app\.js", "sw-register\.js", "assets/og-image\.png")) {
-  $pattern = '(?<=' + $asset + '\?v=)[^"]+'
-  $index = [regex]::Replace($index, $pattern, $version)
+$versionedPages = @("index.html", "pwa-health.html", "usage-stats.html")
+$versionedAssets = @("styles\.css", "site-data\.js", "usage-stats\.js", "app\.js", "sw-register\.js", "assets/og-image\.png")
+foreach ($pageName in $versionedPages) {
+  $pagePath = Join-Path $root $pageName
+  if (-not (Test-Path -LiteralPath $pagePath)) { continue }
+  $page = [System.IO.File]::ReadAllText($pagePath, [System.Text.Encoding]::UTF8)
+  $page = [regex]::Replace($page, 'window\.SITE_VERSION\s*=\s*[^;]+;', "window.SITE_VERSION = '$version';")
+  foreach ($asset in $versionedAssets) {
+    $pattern = '(?<=' + $asset + '\?v=)[^"]+'
+    $page = [regex]::Replace($page, $pattern, $version)
+  }
+  [System.IO.File]::WriteAllText($pagePath, $page, $encoding)
 }
-[System.IO.File]::WriteAllText($indexPath, $index, $encoding)
 
 Write-Host "版本已更新為 $version；已同步 version.json、sw.js、index.html。"
 Write-Host "接著請執行 git add -A、git commit、git push。"

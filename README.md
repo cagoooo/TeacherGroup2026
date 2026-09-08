@@ -1,6 +1,6 @@
 # TeacherGroup2026
 
-> 📌 **建置版本：2026.09.08-1**（依據 `version.json`）
+> 📌 **建置版本：2026.09.08-2**（依據 `version.json`）
 
 桃園市教育產業工會石門國小支會的 116 年度會員服務暨活動宣導靜態網站。
 
@@ -31,6 +31,12 @@
 
 網站已加入 Service Worker 版本更新提示：新版會先在背景下載，使用者按下「立即更新」後才套用並重新整理。日後部署內容更新前，請執行 `powershell -ExecutionPolicy Bypass -File scripts/bump-version.ps1 -Notes "更新說明"`，同步提升 `version.json`、`sw.js`、`index.html` 與資源版本字串。
 
+本輪已新增四個手機友善快速入口（續會、加入、活動、聯絡）與可列印 QR 導覽。QR 只包含公開頁面錨點，產製與 `jsQR` 解碼驗證可用 `npm run generate:qr` 重跑；`npm run check:site` 會檢查 QR manifest、公開網址與圖檔完整性。公告區依開始／封存日期、置頂與優先序排序，過期內容會移入歷史狀態。
+
+PWA 維運頁面為 [`pwa-health.html`](pwa-health.html)，網路中斷時由 [`offline.html`](offline.html) 提供 fallback；Service Worker 會預載首頁、狀態頁、QR 資產與品牌資產，並保留新版提示。使用統計頁 [`usage-stats.html`](usage-stats.html) 僅使用瀏覽器 localStorage 保存匿名次數，不使用 Cookie、不呼叫外部統計服務，也不收集姓名、電話、名冊或付款資訊。
+
+品牌資產治理記錄在 [`brand-assets.json`](brand-assets.json)。目前使用網站專用圖示與既有配色，正式工會 Logo、QR 或新版海報素材尚未標示為已授權；取得正式素材與授權紀錄後，再依同一份 manifest 更新 favicon、PWA icon、OG 圖與社群視覺。
+
 ## 專案進度與未來規劃
 
-目前完成項目、P0／P1 狀態、開放問題與後續候選功能，請參閱 [`PROJECT-PROGRESS.md`](PROJECT-PROGRESS.md)。本輪 RDQ 規格卡位於 [`rdq/RDQ-spec-teachergroup-roadmap-20260908.md`](rdq/RDQ-spec-teachergroup-roadmap-20260908.md)；會長已選定 ROADMAP-01、02、03、05、09，已完成第一階段的靜態網站實作與驗收護欄。
+目前完成項目、P0／P1 狀態、開放問題與後續候選功能，請參閱 [`PROJECT-PROGRESS.md`](PROJECT-PROGRESS.md)。本輪 RDQ 規格卡位於 [`rdq/RDQ-spec-teachergroup-roadmap-20260908.md`](rdq/RDQ-spec-teachergroup-roadmap-20260908.md)；會長已選定 ROADMAP-01、02、03、05、07、08、09、10、11、12，已完成第一階段的靜態網站實作與驗收護欄。
