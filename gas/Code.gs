@@ -31,14 +31,9 @@ const ALLOWED_EVENTS = Object.freeze([
 
 function doGet(e) {
   const action = String((e && e.parameter && e.parameter.action) || 'health').toLowerCase();
+  if (action === 'admin') return adminPage_();
   if (action === 'health') {
-    return json_({
-      ok: true,
-      service: CONFIG.serviceName,
-      schema: CONFIG.schema,
-      mode: 'anonymous-aggregate',
-      writeMethod: 'POST'
-    });
+    return json_(publicHealth_());
   }
 
   return json_({
@@ -50,14 +45,30 @@ function doGet(e) {
 }
 
 function doPost(e) {
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(5000)) return json_({ ok: false, error: 'busy' });
   try {
+    enforceBudget_();
     const payload = parsePayload_(e);
     const eventName = normalizeEvent_(payload.event);
+    validateEnvelope_(payload);
+    if (payload.requestId && CacheService.getScriptCache().get('event:' + payload.requestId)) {
+      metric_('duplicate');
+      return json_({ ok: true, duplicate: true });
+    }
     incrementEvent_(eventName);
+    incrementVersion_(payload.siteVersion);
+    SpreadsheetApp.flush();
+    if (payload.requestId) CacheService.getScriptCache().put('event:' + payload.requestId, '1', 600);
+    PropertiesService.getScriptProperties().setProperty('LAST_WRITE', new Date().toISOString());
+    metric_('accepted');
     return json_({ ok: true, event: eventName });
   } catch (error) {
-    console.error(error && error.stack ? error.stack : error);
-    return json_({ ok: false, error: 'invalid_request' });
+    const code = ['rate_limited', 'invalid_request', 'unsupported_version'].includes(error.message) ? error.message : 'storage_error';
+    metric_(code);
+    return json_({ ok: false, error: code });
+  } finally {
+    lock.releaseLock();
   }
 }
 
@@ -66,6 +77,7 @@ function doPost(e) {
  * 這裡不建立原始訪客紀錄，只建立每日事件彙總表。
  */
 function initializeBackend() {
+  requireBootstrapOwner_();
   const properties = PropertiesService.getScriptProperties();
   const existingId = properties.getProperty(CONFIG.spreadsheetProperty);
   if (existingId) {
@@ -111,27 +123,27 @@ function initializeBackend() {
 }
 
 function getBackendStatus() {
+  requireRole_('viewer');
   const spreadsheetId = PropertiesService.getScriptProperties().getProperty(CONFIG.spreadsheetProperty);
   return spreadsheetId ? backendInfo_(spreadsheetId) : { ok: false, initialized: false };
 }
 
 function parsePayload_(e) {
   const raw = e && e.postData && e.postData.contents ? e.postData.contents : '{}';
-  const payload = JSON.parse(raw);
-  if (!payload || typeof payload !== 'object') throw new Error('payload must be an object');
+  if (raw.length > 1024) throw new Error('invalid_request');
+  let payload;
+  try { payload = JSON.parse(raw); } catch (_) { throw new Error('invalid_request'); }
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload)) throw new Error('invalid_request');
   return payload;
 }
 
 function normalizeEvent_(value) {
   const eventName = String(value || '').trim();
-  if (!ALLOWED_EVENTS.includes(eventName)) throw new Error('event is not allowed');
+  if (!ALLOWED_EVENTS.includes(eventName)) throw new Error('invalid_request');
   return eventName;
 }
 
 function incrementEvent_(eventName) {
-  const lock = LockService.getScriptLock();
-  lock.waitLock(10000);
-  try {
     const sheet = getSummarySheet_();
     const day = Utilities.formatDate(new Date(), CONFIG.timeZone, 'yyyy-MM-dd');
     const updatedAt = Utilities.formatDate(new Date(), CONFIG.timeZone, 'yyyy-MM-dd HH:mm:ss');
@@ -150,9 +162,6 @@ function incrementEvent_(eventName) {
     }
 
     sheet.appendRow([day, eventName, 1, updatedAt]);
-  } finally {
-    lock.releaseLock();
-  }
 }
 
 function getSummarySheet_() {

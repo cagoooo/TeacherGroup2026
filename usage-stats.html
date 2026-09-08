@@ -30,7 +30,8 @@
     <main>
       <p><a href="./">← 回到會員服務首頁</a></p>
       <h1>本機使用統計</h1>
-      <p class="privacy-note">這是 ROADMAP-11 的匿名統計頁：本機會保留明細；若中央後端已啟用，只會上傳固定事件名稱與網站版本，彙整每日次數，不使用 Cookie、不記錄 IP 或 User-Agent，也不收集姓名、電話、會員名冊或付款資料。統計次數代表事件，不等同於去重後的老師人數。</p>
+      <p class="privacy-note">本機會保留明細；中央統計彙整固定事件的每日次數，傳送事件名稱、網站版本及單次隨機請求碼（僅短暫去重），不建立跨事件的訪客識別，也不收集姓名、電話、會員名冊或付款資料。統計次數代表事件，不等同於去重後的老師人數。</p>
+      <p><a id="admin-link" hidden target="_blank" rel="noopener">開啟管理報表（需已授權的學校 Google 帳號）</a></p>
       <p id="updated-at" class="note">資料讀取中……</p>
       <p id="remote-status" class="note">中央彙整狀態：檢查中……</p>
       <table>
@@ -44,9 +45,9 @@
       </div>
       <p class="note">匯出的 JSON 只包含事件名稱、次數與時間戳，不包含個人識別資訊。清除瀏覽器網站資料也會一併清除統計。</p>
     </main>
-    <script>window.SITE_VERSION = '2026.09.08-4';</script>
-    <script src="site-data.js?v=2026.09.08-4"></script>
-    <script src="usage-stats.js?v=2026.09.08-4"></script>
+    <script>window.SITE_VERSION = '2026.09.08-5';</script>
+    <script src="site-data.js?v=2026.09.08-5"></script>
+    <script src="usage-stats.js?v=2026.09.08-5"></script>
     <script>
       (() => {
         const usage = window.TeacherGroupUsage;
@@ -76,8 +77,13 @@
           document.getElementById('updated-at').textContent = stats.lastUpdatedAt ? `最近更新：${stats.lastUpdatedAt}` : '目前尚未有統計事件。';
           document.getElementById('stats-body').innerHTML = usage.eventNames.map((name) => `<tr><th scope="row">${labels[name] || name}</th><td>${Number(stats.events[name] || 0)}</td></tr>`).join('');
           document.getElementById('remote-status').textContent = usage.remoteEnabled
-            ? '中央彙整狀態：已啟用（只送固定事件名稱與版本）'
+            ? '中央彙整狀態：已啟用（匿名事件與短期去重）'
             : '中央彙整狀態：尚未啟用，目前只保存本機統計。';
+          if (window.TeacherGroupUsage.remoteEnabled) {
+            const adminLink = document.getElementById('admin-link');
+            adminLink.href = window.SITE_CONFIG.usageAnalytics.endpoint + '?action=admin';
+            adminLink.hidden = false;
+          }
         };
         document.getElementById('export-stats').addEventListener('click', () => {
           const blob = new Blob([usage.exportJson()], { type: 'application/json' });

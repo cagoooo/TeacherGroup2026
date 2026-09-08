@@ -19,3 +19,5 @@ jobs:
           node-version: 20
       - name: 執行網站防呆檢查
         run: npm run check:site
+      - name: 後端權限與資料驗證回歸測試
+        run: npm run test:backend

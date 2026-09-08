@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "test:backend": "node --test scripts/test-backend.mjs",
     "check:site": "node scripts/check-site.mjs",
     "generate:og": "node scripts/generate-og-image.mjs",
     "generate:qr": "node scripts/generate-qr-assets.mjs"

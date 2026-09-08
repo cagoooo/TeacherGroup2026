@@ -27,6 +27,7 @@ const brandAssets = JSON.parse(read("brand-assets.json"));
 const qrManifest = JSON.parse(read("assets/qr-manifest.json"));
 const gasManifest = JSON.parse(read("gas/appsscript.json"));
 const gasCode = read("gas/Code.gs");
+const operationsCode = read("gas/Operations.gs");
 const sandbox = { window: {} };
 vm.runInNewContext(siteDataSource, sandbox, { filename: "site-data.js" });
 const config = sandbox.window.SITE_CONFIG;
@@ -98,6 +99,7 @@ for (const forbiddenText of [
 }
 
 assert(versionData.version, "version.json 缺少 version");
+assert(operationsCode.includes(`'${versionData.version}'`), "GAS 支援版本清單缺少本次網站版本；請先更新後端再發布前端");
 assert(sw.includes(`const BUILD_VERSION = '${versionData.version}';`), "sw.js 版本與 version.json 不一致");
 assert(html.includes(`window.SITE_VERSION = '${versionData.version}';`), "index.html SITE_VERSION 與 version.json 不一致");
 
@@ -127,7 +129,7 @@ assert(brandAssets.officialLogoAuthorized === false, "尚未取得正式 logo �
 assert(brandAssets.assets?.favicon === "assets/favicon.svg", "品牌資產 manifest 必須指向既有 favicon");
 assert(gasManifest.webapp?.executeAs === "USER_DEPLOYING" && gasManifest.webapp?.access === "ANYONE_ANONYMOUS", "GAS Web App manifest 必須以部署者執行並允許匿名寫入");
 assert(gasCode.includes("ALLOWED_EVENTS") && gasCode.includes("initializeBackend") && gasCode.includes("LockService"), "GAS 後端缺少固定事件白名單、初始化或並發鎖");
-assert(!gasCode.includes("Session.getActiveUser") && !gasCode.includes("Session.getEffectiveUser") && !gasCode.includes("e.parameter.userAgent") && !gasCode.includes("e.parameter.ip"), "GAS 後端不可建立使用者識別資料");
+assert(!gasCode.includes("Session.getActiveUser") && !gasCode.includes("Session.getEffectiveUser") && !gasCode.includes("e.parameter.userAgent") && !gasCode.includes("e.parameter.ip"), "匿名接收程式不可讀取訪客身分；管理登入限定 Operations.gs");
 
 const ogPath = resolve(root, "assets", "og-image.png");
 assert(existsSync(ogPath), "找不到 assets/og-image.png");

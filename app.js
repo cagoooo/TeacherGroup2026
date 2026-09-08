@@ -191,7 +191,7 @@
       entries.forEach((entry) => {
         if (!entry.isIntersecting || tracked.has(entry.target.id)) return;
         tracked.add(entry.target.id);
-        window.TeacherGroupUsage?.record(`section_view_${entry.target.id}`);
+        window.TeacherGroupUsage?.record(`section_view_${entry.target.id.replace(/-/g, '_')}`);
       });
     }, { threshold: 0.35 });
     sectionIds

@@ -41,7 +41,7 @@ const usageAnalyticsConfig = Object.freeze({
   provider: "gas-sheets",
   schema: 1,
   scope: "anonymous-aggregate",
-  note: "只傳送固定事件名稱與網站版本，不傳送姓名、電話、名冊、付款資料、IP 或 User-Agent。"
+  note: "只傳送固定事件名稱、網站版本及單次隨機請求碼；請求碼僅短暫去重，不傳送姓名、電話、名冊、付款資料、IP 或 User-Agent。"
 });
 
 const quickEntryData = Object.freeze([

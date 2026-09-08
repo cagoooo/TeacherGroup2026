@@ -63,7 +63,8 @@
     const payload = JSON.stringify({
       schema: Number(analyticsConfig.schema || 1),
       event: eventName,
-      siteVersion: String(window.SITE_VERSION || "unknown")
+      siteVersion: String(window.SITE_VERSION || "unknown"),
+      ...(typeof globalThis.crypto?.randomUUID === "function" ? { requestId: crypto.randomUUID() } : {})
     });
 
     try {
