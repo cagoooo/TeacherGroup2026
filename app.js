@@ -172,6 +172,34 @@
     });
   };
 
+  const bindSectionViewEvents = () => {
+    if (!("IntersectionObserver" in window)) return;
+    const sectionIds = [
+      "quick-entry",
+      "announcements",
+      "activities",
+      "workshops",
+      "renewal",
+      "joining",
+      "membership",
+      "payment",
+      "faq",
+      "contact"
+    ];
+    const tracked = new Set();
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting || tracked.has(entry.target.id)) return;
+        tracked.add(entry.target.id);
+        window.TeacherGroupUsage?.record(`section_view_${entry.target.id}`);
+      });
+    }, { threshold: 0.35 });
+    sectionIds
+      .map((id) => document.getElementById(id))
+      .filter(Boolean)
+      .forEach((section) => observer.observe(section));
+  };
+
   renderActivitySchedule();
   renderActivityReminders();
   renderWorkshops();
@@ -179,6 +207,7 @@
   renderAnnouncements();
   renderAnnouncementStrip();
   bindUsageEvents();
+  bindSectionViewEvents();
 
   document.querySelector("[data-print-quick-entry]")?.addEventListener("click", () => {
     window.TeacherGroupUsage?.record("print_quick_entry");

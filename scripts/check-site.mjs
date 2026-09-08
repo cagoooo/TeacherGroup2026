@@ -25,6 +25,8 @@ const usageStatsSource = read("usage-stats.js");
 const offlinePage = read("offline.html");
 const brandAssets = JSON.parse(read("brand-assets.json"));
 const qrManifest = JSON.parse(read("assets/qr-manifest.json"));
+const gasManifest = JSON.parse(read("gas/appsscript.json"));
+const gasCode = read("gas/Code.gs");
 const sandbox = { window: {} };
 vm.runInNewContext(siteDataSource, sandbox, { filename: "site-data.js" });
 const config = sandbox.window.SITE_CONFIG;
@@ -48,6 +50,9 @@ assert(Array.isArray(config.activityReminders) && config.activityReminders.lengt
 assert(Array.isArray(config.workshops) && config.workshops.length === 3, "多元研習資料應有 3 筆");
 assert(Array.isArray(config.quickEntries) && config.quickEntries.length === 4, "快速入口資料應有 4 筆");
 assert(Array.isArray(config.announcements) && config.announcements.length === 3, "公告資料應有 3 筆");
+assert(config.usageAnalytics?.provider === "gas-sheets", "使用統計後端必須標示為 gas-sheets");
+assert(typeof config.usageAnalytics?.enabled === "boolean", "使用統計後端必須明確標示 enabled");
+assert(config.usageAnalytics?.enabled === false || /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/.test(config.usageAnalytics?.endpoint ?? ""), "啟用中央統計時必須使用 GAS Web App /exec 網址");
 
 for (const entry of config.quickEntries ?? []) {
   assert(entry.qrUrl?.startsWith("https://cagoooo.github.io/TeacherGroup2026/"), `QR 必須指向本站公開網址：${entry.id}`);
@@ -110,12 +115,19 @@ assert(html.includes(`usage-stats.js?v=${versionData.version}`), "首頁缺少�
 
 assert(pwaHealth.includes(`window.SITE_VERSION = '${versionData.version}';`), "pwa-health.html 版本與 version.json 不一致");
 assert(usageStatsPage.includes(`usage-stats.js?v=${versionData.version}`), "usage-stats.html 缺少版本化 usage-stats.js");
+assert(usageStatsPage.includes(`site-data.js?v=${versionData.version}`), "usage-stats.html 缺少版本化 site-data.js");
 assert(offlinePage.includes("返回會員服務首頁"), "offline.html 缺少回首頁入口");
 assert(sw.includes("'./offline.html'") && sw.includes("'./pwa-health.html'") && sw.includes("'./usage-stats.html'"), "Service Worker 缺少 PWA／離線頁預快取");
 assert(sw.includes("caches.match('./offline.html')"), "Service Worker 缺少離線 fallback");
-assert(!usageStatsSource.includes("sendBeacon") && !usageStatsSource.includes("XMLHttpRequest"), "本機使用統計不可主動傳送資料");
+assert(usageStatsSource.includes("navigator.sendBeacon") && usageStatsSource.includes("mode: \"no-cors\""), "中央匿名統計必須使用非阻塞傳輸");
+assert(!usageStatsSource.includes("document.cookie") && !usageStatsSource.includes("navigator.userAgent") && !usageStatsSource.includes("location.href"), "匿名統計不可讀取 Cookie、User-Agent 或完整網址");
+assert(usageStatsSource.includes("event: eventName") && usageStatsSource.includes("siteVersion"), "中央匿名統計 payload 只能包含固定事件與網站版本");
+assert(usageStatsPage.includes("不等同於去重後的老師人數"), "統計頁必須說明事件次數不等同於老師人數");
 assert(brandAssets.officialLogoAuthorized === false, "尚未取得正式 logo 授權時，brand-assets.json 必須保持 provisional");
 assert(brandAssets.assets?.favicon === "assets/favicon.svg", "品牌資產 manifest 必須指向既有 favicon");
+assert(gasManifest.webapp?.executeAs === "USER_DEPLOYING" && gasManifest.webapp?.access === "ANYONE_ANONYMOUS", "GAS Web App manifest 必須以部署者執行並允許匿名寫入");
+assert(gasCode.includes("ALLOWED_EVENTS") && gasCode.includes("initializeBackend") && gasCode.includes("LockService"), "GAS 後端缺少固定事件白名單、初始化或並發鎖");
+assert(!gasCode.includes("Session.getActiveUser") && !gasCode.includes("Session.getEffectiveUser") && !gasCode.includes("e.parameter.userAgent") && !gasCode.includes("e.parameter.ip"), "GAS 後端不可建立使用者識別資料");
 
 const ogPath = resolve(root, "assets", "og-image.png");
 assert(existsSync(ogPath), "找不到 assets/og-image.png");

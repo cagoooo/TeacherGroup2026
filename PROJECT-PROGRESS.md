@@ -1,7 +1,7 @@
 # TeacherGroup2026｜專案進度表
 
 > 最後更新：2026-09-08（臺灣時間）  
-> 線上版本：`2026.09.08-2`｜GitHub Pages：<https://cagoooo.github.io/TeacherGroup2026/>
+> 線上版本：`2026.09.08-3`（前端骨架已更新，GAS deployment 尚待完成匿名存取設定）｜GitHub Pages：<https://cagoooo.github.io/TeacherGroup2026/>
 > 本輪再依會長選定的 `ROADMAP-07`、`ROADMAP-08`、`ROADMAP-10`、`ROADMAP-11`、`ROADMAP-12` 完成第一階段實作；版本、提交與公開端點以 `version.json`、GitHub `main` 與線上檢查結果為準。
 
 ## 目前狀態摘要
@@ -10,7 +10,7 @@
 | --- | ---: | --- |
 | P0 | 0 項開放 | 沒有阻塞網站公開使用、付款流程或會員資料安全的已知問題。 |
 | P1 | 0 項開放、8 項已完成／第一階段完成 | 收費流程、活動宣導、研習宣導、社群圖與發布防呆均已納入目前版本。 |
-| P2 | 5 項已完成／第一階段完成 | 手機版可讀性、QR 導覽、公告生命週期、離線備援與本機匿名統計已建立；更完整的瀏覽器自動化與跨裝置統計仍列為後續可選擴充。 |
+| P2 | 5 項已完成／第一階段完成、1 項後端啟用中 | 手機版可讀性、QR 導覽、公告生命週期、離線備援與匿名統計已建立；GAS＋Google Sheets 中央彙整後端已建立骨架，尚待完成匿名 Web App 存取與首次試算表初始化。 |
 
 ## 已完成項目
 
@@ -34,10 +34,11 @@
 | DONE-16 | P2／ROADMAP-10 | 新增 PWA 狀態頁、離線 fallback 與快取預載內容。 | `pwa-health.html` 顯示公開版本、SW 快取版本與連線狀態；`offline.html` 納入 Service Worker fallback。 |
 | DONE-17 | P2／ROADMAP-11 | 新增本機匿名使用統計與 JSON 匯出。 | 只存瀏覽器 localStorage，不使用 Cookie、不送出資料、不收集會員或付款資訊；跨裝置彙整尚未啟用。 |
 | DONE-18 | P3／ROADMAP-12 | 統一現有 favicon、PWA icon、OG 圖與網站色彩，建立 `brand-assets.json` 資產治理檔。 | 目前明確標示為 provisional site brand；正式工會 logo／新版海報素材取得授權後再替換。 |
+| IN-PROGRESS-19 | P2／ROADMAP-11 延伸 | 建立 GAS Web App＋Google Sheets 匿名中央彙整後端，事件細分到快速入口、公告與各內容區塊閱覽。 | `gas/Code.gs` 已完成固定事件白名單、每日彙總與並發鎖；正式啟用仍需 Web App 匿名存取設定與 `initializeBackend` 首次授權。 |
 
 ## 目前開放項目
 
-目前沒有已知的 P0 或 P1 開放項目；本輪原先的 `OPEN-01` 社群分享圖已由 `DONE-10` 關閉。P2／P3 所選項目已完成第一階段，後續只剩完整瀏覽器自動化、跨裝置統計與正式授權品牌素材等延伸工作。
+目前沒有已知的 P0 或 P1 開放項目；本輪原先的 `OPEN-01` 社群分享圖已由 `DONE-10` 關閉。P2／P3 所選項目已完成第一階段；目前新增的 GAS 中央彙整已完成本機程式與 deployment 建立，但因 Google Workspace 的匿名存取設定與首次授權仍需在 GAS 編輯器完成，尚未把 `/exec` 網址寫入前端。
 
 ## 後續優化與可開發功能候選清單
 

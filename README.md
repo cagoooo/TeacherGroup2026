@@ -1,6 +1,6 @@
 # TeacherGroup2026
 
-> 📌 **建置版本：2026.09.08-2**（依據 `version.json`）
+> 📌 **建置版本：2026.09.08-3**（依據 `version.json`）
 
 桃園市教育產業工會石門國小支會的 116 年度會員服務暨活動宣導靜態網站。
 
@@ -33,7 +33,9 @@
 
 本輪已新增四個手機友善快速入口（續會、加入、活動、聯絡）與可列印 QR 導覽。QR 只包含公開頁面錨點，產製與 `jsQR` 解碼驗證可用 `npm run generate:qr` 重跑；`npm run check:site` 會檢查 QR manifest、公開網址與圖檔完整性。公告區依開始／封存日期、置頂與優先序排序，過期內容會移入歷史狀態。
 
-PWA 維運頁面為 [`pwa-health.html`](pwa-health.html)，網路中斷時由 [`offline.html`](offline.html) 提供 fallback；Service Worker 會預載首頁、狀態頁、QR 資產與品牌資產，並保留新版提示。使用統計頁 [`usage-stats.html`](usage-stats.html) 僅使用瀏覽器 localStorage 保存匿名次數，不使用 Cookie、不呼叫外部統計服務，也不收集姓名、電話、名冊或付款資訊。
+PWA 維運頁面為 [`pwa-health.html`](pwa-health.html)，網路中斷時由 [`offline.html`](offline.html) 提供 fallback；Service Worker 會預載首頁、狀態頁、QR 資產與品牌資產，並保留新版提示。使用統計頁 [`usage-stats.html`](usage-stats.html) 永遠保留本機匿名明細；中央後端尚未啟用時不會上傳，啟用後也只傳送固定事件名稱與網站版本，不使用 Cookie、不收集姓名、電話、名冊或付款資訊。
+
+網站後端骨架位於 [`gas/`](gas/)，採 Google Apps Script Web App＋Google Sheets 每日彙總。前端只會傳送固定事件名稱與網站版本；後端不儲存原始訪客紀錄、不讀取 IP／User-Agent，也不建立老師身分。第一次啟用中央彙整時，請依 [`GAS-BACKEND.md`](GAS-BACKEND.md) 用學校管理帳號初始化私有試算表，再填入 `/exec` 網址；在尚未設定網址前，網站會安全地維持本機統計。
 
 品牌資產治理記錄在 [`brand-assets.json`](brand-assets.json)。目前使用網站專用圖示與既有配色，正式工會 Logo、QR 或新版海報素材尚未標示為已授權；取得正式素材與授權紀錄後，再依同一份 manifest 更新 favicon、PWA icon、OG 圖與社群視覺。
 

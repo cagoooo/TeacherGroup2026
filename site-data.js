@@ -35,6 +35,15 @@ const activityReminderData = Object.freeze([
 
 const publicSiteUrl = "https://cagoooo.github.io/TeacherGroup2026/";
 
+const usageAnalyticsConfig = Object.freeze({
+  enabled: false,
+  endpoint: "",
+  provider: "gas-sheets",
+  schema: 1,
+  scope: "anonymous-aggregate",
+  note: "只傳送固定事件名稱與網站版本，不傳送姓名、電話、名冊、付款資料、IP 或 User-Agent。"
+});
+
 const quickEntryData = Object.freeze([
   {
     id: "renewal",
@@ -226,6 +235,7 @@ window.SITE_CONFIG = Object.freeze({
   announcements: announcementData,
   pwaHealthUrl: "pwa-health.html",
   usageStatsUrl: "usage-stats.html",
+  usageAnalytics: usageAnalyticsConfig,
   brandAssetManifest: "brand-assets.json",
   activityTitle: "陽光親子 928 健行活動",
   activitySeries: "第一波｜教師節活動",

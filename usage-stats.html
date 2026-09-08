@@ -30,8 +30,9 @@
     <main>
       <p><a href="./">← 回到會員服務首頁</a></p>
       <h1>本機使用統計</h1>
-      <p class="privacy-note">這是 ROADMAP-11 的第一階段：統計只保存在目前這台裝置的瀏覽器中，不會上傳、不使用 Cookie、不記錄 IP，也不收集姓名、電話、會員名冊或付款資料。它適合做現場裝置的入口檢查；若未來要做跨裝置彙整，需另外確認服務、告知與保存期限。</p>
+      <p class="privacy-note">這是 ROADMAP-11 的匿名統計頁：本機會保留明細；若中央後端已啟用，只會上傳固定事件名稱與網站版本，彙整每日次數，不使用 Cookie、不記錄 IP 或 User-Agent，也不收集姓名、電話、會員名冊或付款資料。統計次數代表事件，不等同於去重後的老師人數。</p>
       <p id="updated-at" class="note">資料讀取中……</p>
+      <p id="remote-status" class="note">中央彙整狀態：檢查中……</p>
       <table>
         <thead><tr><th scope="col">入口事件</th><th scope="col">本機次數</th></tr></thead>
         <tbody id="stats-body"></tbody>
@@ -43,7 +44,9 @@
       </div>
       <p class="note">匯出的 JSON 只包含事件名稱、次數與時間戳，不包含個人識別資訊。清除瀏覽器網站資料也會一併清除統計。</p>
     </main>
-    <script src="usage-stats.js?v=2026.09.08-2"></script>
+    <script>window.SITE_VERSION = '2026.09.08-3';</script>
+    <script src="site-data.js?v=2026.09.08-3"></script>
+    <script src="usage-stats.js?v=2026.09.08-3"></script>
     <script>
       (() => {
         const usage = window.TeacherGroupUsage;
@@ -56,12 +59,25 @@
           announcement_workshops: '公告｜學校多元研習',
           announcement_activities: '公告｜928 健行活動',
           announcement_membership: '公告｜會員服務',
-          print_quick_entry: '列印 QR 導覽'
+          print_quick_entry: '列印 QR 導覽',
+          section_view_quick_entry: '區塊閱覽｜快速入口',
+          section_view_announcements: '區塊閱覽｜公告',
+          section_view_activities: '區塊閱覽｜活動宣導',
+          section_view_workshops: '區塊閱覽｜學校多元研習',
+          section_view_renewal: '區塊閱覽｜舊會員續會',
+          section_view_joining: '區塊閱覽｜新進／中斷會員',
+          section_view_membership: '區塊閱覽｜會員身分',
+          section_view_payment: '區塊閱覽｜本校辦理方式',
+          section_view_faq: '區塊閱覽｜常見問題',
+          section_view_contact: '區塊閱覽｜聯絡方式'
         };
         const render = () => {
           const stats = usage.snapshot();
           document.getElementById('updated-at').textContent = stats.lastUpdatedAt ? `最近更新：${stats.lastUpdatedAt}` : '目前尚未有統計事件。';
           document.getElementById('stats-body').innerHTML = usage.eventNames.map((name) => `<tr><th scope="row">${labels[name] || name}</th><td>${Number(stats.events[name] || 0)}</td></tr>`).join('');
+          document.getElementById('remote-status').textContent = usage.remoteEnabled
+            ? '中央彙整狀態：已啟用（只送固定事件名稱與版本）'
+            : '中央彙整狀態：尚未啟用，目前只保存本機統計。';
         };
         document.getElementById('export-stats').addEventListener('click', () => {
           const blob = new Blob([usage.exportJson()], { type: 'application/json' });
