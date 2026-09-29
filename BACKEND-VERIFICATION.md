@@ -4,7 +4,7 @@
 
 ## 目前狀態
 
-- 新網站版本：2026.09.29-2；GAS 管理後端 2.0.1，正式 deployment 預計更新為 version 9，沿用原 `/exec`。部署後將在此補記實際完成版本。
+- 新網站版本：2026.09.29-2；GAS 管理後端 2.0.1，正式 deployment 已更新為 version 9，沿用原 `/exec`。
 - Google 補充授權及 `initializeOperations` 已成功。
 - 首份私人備份包含 9 列（包含統計／稽核），SHA-256 `0beeb1ad792c9b19e720f62cf5010dbcebdfca4dd6e82f98b74620859e05baaf`。
 - 雲端隔離復原成功，比對同一 SHA-256，回傳 `productionUntouched: true`，正式資料未覆寫。
@@ -32,7 +32,7 @@
 4. 核對 `clasp show-authorized-user -u school` 與 `list-deployments`；先推送任何後續修正，再建立版本，使用原 deployment ID 執行 `update-deployment`。
 5. 驗證 health ready、匿名錯誤事件不寫入、管理頁未登入拒絕、學校擁有者登入可查看報表／下載 CSV、私人備份與演練可用。
 6. 如需製造事件驗收，記錄明確測試事件及次數；不要把驗收流量當教師閱覽數，不刪除混有正式資料的紀錄。
-7. 前端 2026.09.29-2 已發布；確認 Pages、Service Worker 版本及使用統計頁管理入口。
+7. 前端 2026.09.29-2 已發布；GitHub Actions 成功，公開 `version.json`、電影研習專區與更新後頁尾均已核對。
 8. 完成後更新此文件及 PROJECT-PROGRESS；不能預先標記雲端備份、角色跨帳號或復原演練成功。
 
 ## 採用預設與限制
