@@ -4,7 +4,7 @@
 
 ## 目前狀態
 
-- 網站版本：2026.09.08-6，管理後端 2.0.1，GAS 正式 deployment 更新為 version 7；沿用同一 `/exec`。
+- 新網站版本：2026.09.29-1；GAS 管理後端 2.0.1，正式 deployment 已更新為 version 8，沿用原 `/exec`。GitHub Pages 前端仍待發布與線上核實。
 - Google 補充授權及 `initializeOperations` 已成功。
 - 首份私人備份包含 9 列（包含統計／稽核），SHA-256 `0beeb1ad792c9b19e720f62cf5010dbcebdfca4dd6e82f98b74620859e05baaf`。
 - 雲端隔離復原成功，比對同一 SHA-256，回傳 `productionUntouched: true`，正式資料未覆寫。

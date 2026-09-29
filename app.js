@@ -178,12 +178,49 @@
     }
   };
 
+  const renderFilmWorkshopStatus = () => {
+    const event = config.filmWorkshop;
+    const target = document.querySelector("[data-film-workshop-status]");
+    const action = document.querySelector("[data-film-workshop-registration-action]");
+    if (!event || !target) return;
+
+    const state = getRegistrationState(event);
+    target.className = `workshop-registration-status registration-status registration-status-${state.key}`;
+    target.dataset.registrationState = state.key;
+    target.innerHTML = `
+      <i class="bi ${state.icon}" aria-hidden="true"></i>
+      <span><strong>${state.label}</strong><small>${state.description}</small></span>
+    `;
+
+    if (!action) return;
+    const isOpen = state.key === "open";
+    action.classList.toggle("button-disabled", !isOpen);
+    action.classList.toggle("button-primary", isOpen);
+    action.dataset.registrationInactive = String(!isOpen);
+    if (isOpen) {
+      action.href = safeHref(event.registrationUrl);
+      action.target = "_blank";
+      action.removeAttribute("aria-disabled");
+      action.removeAttribute("tabindex");
+      action.innerHTML = "前往 BeClass 線上報名 <i class=\"bi bi-box-arrow-up-right\" aria-hidden=\"true\"></i>";
+    } else {
+      action.href = "#film-workshop";
+      action.removeAttribute("target");
+      action.setAttribute("aria-disabled", "true");
+      action.setAttribute("tabindex", "-1");
+      action.innerHTML = `${state.label} <i class="bi ${state.icon}" aria-hidden="true"></i>`;
+    }
+  };
+
   let registrationRefreshTimer = null;
   const scheduleRegistrationRefresh = () => {
     if (registrationRefreshTimer) window.clearTimeout(registrationRefreshTimer);
     const now = Date.now();
     const timestamps = [
       ...(config.workshops ?? []).flatMap((workshop) => [workshop.registrationStartsAt, workshop.registrationEndsAt, workshop.eventEndsAt]),
+      config.filmWorkshop?.registrationStartsAt,
+      config.filmWorkshop?.registrationEndsAt,
+      config.filmWorkshop?.eventEndsAt,
       config.activityRegistrationStartsAt,
       config.activityRegistrationEndsAt,
       config.activityEventEndsAt
@@ -195,6 +232,7 @@
     if (!Number.isFinite(nextTimestamp)) return;
     registrationRefreshTimer = window.setTimeout(() => {
       renderWorkshops();
+      renderFilmWorkshopStatus();
       renderActivityRegistrationState();
       bindUsageEvents();
       scheduleRegistrationRefresh();
@@ -298,6 +336,7 @@
   renderActivitySchedule();
   renderActivityReminders();
   renderWorkshops();
+  renderFilmWorkshopStatus();
   renderActivityRegistrationState();
   scheduleRegistrationRefresh();
   renderQuickEntries();

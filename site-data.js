@@ -68,7 +68,7 @@ const quickEntryData = Object.freeze([
   {
     id: "activities",
     title: "活動宣導",
-    description: "查看 928 健行活動與報名提醒",
+    description: "查看健行活動、電影研習及報名提醒",
     href: "#activities",
     qrUrl: `${publicSiteUrl}#activities`,
     qrAsset: "assets/qr-activities.png",
@@ -90,14 +90,14 @@ const quickEntryData = Object.freeze([
 const announcementData = Object.freeze([
   {
     id: "workshops",
-    title: "9、10 月學校多元研習",
-    kind: "研習公告",
-    summary: "三場研習依正式計畫辦理，請依 Google 表單或課程編號報名。",
-    href: "#workshops",
-    startsAt: "2026-09-04T00:00:00+08:00",
-    archiveAt: "2026-10-18T00:00:00+08:00",
-    dateLabel: "115 年 9 月 4 日公告",
-    priority: 100,
+    title: "10 月「挖掘者」電影研習",
+    kind: "會員活動",
+    summary: "10 月 18 日大江星橋國際影城舉行，免費、限額 200 名；線上報名完成不代表錄取。",
+    href: "#film-workshop",
+    startsAt: "2026-09-29T13:00:00+08:00",
+    archiveAt: "2026-10-19T00:00:00+08:00",
+    dateLabel: "115 年 9 月 29 日公告",
+    priority: 120,
     pinned: true
   },
   {
@@ -201,6 +201,39 @@ const workshopData = Object.freeze([
   }
 ]);
 
+const filmWorkshopData = Object.freeze({
+  id: "film-workshop",
+  registrationUrl: "https://www.beclass.com/rid=305283d6ab61e4b78ab4",
+  planUrl: "assets/film-workshop-plan-2026-10.pdf",
+  registrationStartsAt: "2026-09-29T13:00:00+08:00",
+  registrationEndsAt: "2026-10-09T15:59:00+08:00",
+  eventEndsAt: "2026-10-19T00:00:00+08:00",
+  phone: "03-4583860",
+  email: "teuniontw@gmail.com"
+});
+
+const filmWorkshopFieldMap = Object.freeze({
+  filmWorkshopTitle: "115 年 10 月「挖掘者」電影研習活動",
+  filmWorkshopDate: "115 年 10 月 18 日（星期日）",
+  filmWorkshopTime: "預計上午 10:00；實際開演時間與廳次將於 10 月 14 日前公告",
+  filmWorkshopVenue: "大江星橋國際影城（桃園市中壢區中園路二段 501 號 4–7 樓）",
+  filmWorkshopAudience: "已繳本會 115 年度會費，或已預繳本會 116 年度會費之會員。",
+  filmWorkshopQuota: "總額 200 名；原則每校 2 名，支會會員數滿 60 人加 1 名、滿 90 人加 2 名、滿 120 人加 3 名，以此類推；贊助會員（含退休及特別會員）至多 20 名，其餘列冊候補。",
+  filmWorkshopNewMemberRule: "新進／中斷會員須於 10 月 6 日（二）前完成 116 年度工會會費 1,200 元及入會申請表送達工會；石門國小校內 300 元康樂費另依本校收費流程辦理。",
+  filmWorkshopFee: "免費",
+  filmWorkshopHours: "全程參與之教師可核發 2 小時研習時數。",
+  filmWorkshopRegistrationWindow: "9/29（二）13:00～10/9（五）15:59",
+  filmWorkshopRegistrationNote: "公文摘要載明 15:59，附件計畫載明 16:00；請於 15:59 前完成，並以 BeClass 實際狀態為準。",
+  filmWorkshopSelectionNote: "顯示報名完成不代表錄取；錄取名單預計於 10 月 13 日前公告並以簡訊通知。",
+  filmWorkshopCancellationNote: "取消報名請於 10 月 12 日（一）13:00 前寄信通知；錄取後臨時無法參加，請於 10 月 16 日（五）13:00 前通知，以利遞補。",
+  filmWorkshopArrivalNote: "不開放現場候補或眷屬參加；電影開演後不得領票入場。報到時請攜帶會員卡或身分證件。",
+  filmWorkshopRoomNote: "實際開演時間與影廳將於 10 月 14 日（三）前公告於工會官網及 Facebook，請錄取者自行查閱。",
+  filmWorkshopRegistrationUrl: filmWorkshopData.registrationUrl,
+  filmWorkshopPlanUrl: filmWorkshopData.planUrl,
+  filmWorkshopPhone: filmWorkshopData.phone,
+  filmWorkshopEmail: filmWorkshopData.email
+});
+
 const workshopFieldMap = Object.freeze({
   workshopFilmTitle: workshopData[0].title,
   workshopFilmTime: workshopData[0].time,
@@ -267,10 +300,12 @@ window.SITE_CONFIG = Object.freeze({
   activitySchedule: activityScheduleData,
   activityReminders: activityReminderData,
   workshops: workshopData,
+  filmWorkshop: filmWorkshopData,
   workshopTitle: "115 年度學校多元研習",
   workshopAnnouncementLabel: "9、10 月學校多元研習",
   workshopAnnouncementDate: "115 年 9 月 4 日公文",
   ...workshopFieldMap,
+  ...filmWorkshopFieldMap,
   officialWebsite: "https://www.teu.org.tw/",
   emailLink: "mailto:teuniontw@gmail.com"
 });

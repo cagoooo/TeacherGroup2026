@@ -249,6 +249,21 @@ h3 { line-height: 1.42; }
 .workshop-course-code strong { font-family: ui-monospace, "Cascadia Mono", monospace; font-size: 0.95rem; letter-spacing: 0.02em; overflow-wrap: anywhere; }
 .workshop-source-note { display: flex; gap: 8px; align-items: flex-start; margin: 24px 0 0; color: var(--muted); font-size: 0.8rem; line-height: 1.55; }
 .workshop-source-note i { flex: 0 0 auto; margin-top: 4px; color: var(--navy-800); }
+.film-workshop-section { margin-top: 42px; padding: clamp(22px, 4vw, 42px); border: 1px solid #f0d7ce; border-radius: var(--radius-lg); background: linear-gradient(145deg, #fff5f0 0%, #fff 62%); scroll-margin-top: 100px; }
+.film-workshop-heading { max-width: 850px; margin-inline: auto; }
+.film-workshop-grid { grid-template-columns: minmax(0, 1fr); max-width: 1000px; margin-inline: auto; }
+.film-workshop-card .workshop-card-intro { min-height: auto; }
+.film-workshop-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 26px; row-gap: 16px; }
+.film-workshop-details { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 22px; }
+.film-workshop-detail { min-width: 0; padding: 17px; border: 1px solid var(--line); border-radius: 13px; background: #fffaf7; }
+.film-workshop-detail h4 { margin: 0 0 9px; color: var(--navy-900); font-size: 0.95rem; }
+.film-workshop-detail h4 i { margin-right: 5px; color: var(--red-700); }
+.film-workshop-detail p { margin: 0; color: var(--muted); font-size: 0.85rem; line-height: 1.65; overflow-wrap: anywhere; }
+.film-workshop-detail p + p { margin-top: 8px; }
+.film-workshop-detail a { color: var(--navy-800); font-size: 0.85rem; font-weight: 800; overflow-wrap: anywhere; }
+.film-workshop-links { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+.film-workshop-links a { color: var(--navy-800); font-size: 0.82rem; font-weight: 800; }
+.film-workshop-section > .workshop-source-note { max-width: 1000px; margin-inline: auto; }
 .deadline-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
 .deadline-card { position: relative; min-height: 340px; padding: 32px; border: 1px solid #c7d7ef; border-radius: var(--radius-lg); background: #fff; box-shadow: 0 8px 18px rgba(20, 62, 123, 0.06); overflow: hidden; }
 .deadline-card-highlight { border: 2px solid var(--navy-800); }
@@ -382,7 +397,9 @@ details a { color: var(--navy-800); font-weight: 800; }
   .activity-fact-wide { grid-column: auto; }
   .activity-actions .button { width: 100%; }
   .workshop-grid { grid-template-columns: 1fr; }
+  .film-workshop-meta, .film-workshop-details { grid-template-columns: 1fr; }
   .workshop-card { padding: 23px; }
+  .film-workshop-section { margin-top: 30px; padding: 19px; }
   .workshop-card-intro { min-height: auto; }
   .quick-entry-grid, .announcement-grid { grid-template-columns: 1fr; }
   .quick-entry-card { grid-template-columns: minmax(0, 1fr) 112px; padding: 17px; }

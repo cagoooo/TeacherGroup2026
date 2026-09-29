@@ -1,4 +1,4 @@
-const BUILD_VERSION = '2026.09.08-6';
+const BUILD_VERSION = '2026.09.29-1';
 const CACHE_NAME = `teachergroup-${BUILD_VERSION}`;
 const PRECACHE_ASSETS = [
   './',
@@ -25,6 +25,7 @@ const PRECACHE_ASSETS = [
   './assets/qr-activities.png',
   './assets/qr-contact.png',
   './assets/qr-manifest.json',
+  './assets/film-workshop-plan-2026-10.pdf',
   './brand-assets.json',
   './site.webmanifest'
 ];
