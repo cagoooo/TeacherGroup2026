@@ -46,3 +46,18 @@ PWA 維運頁面為 [`pwa-health.html`](pwa-health.html)，網路中斷時由 [`
 已完成 BACKEND-01～04 管理更新：私人報表、CSV／JSON 匯出、備份復原、角色權限、管理稽核與匿名端點治理。GAS 已部署後端 2.0.1，備份復原、登入、匯出與匿名拒絕存取已實測。網站「本機使用統計」頁提供管理報表入口；使用與部署說明見 [`GAS-BACKEND.md`](GAS-BACKEND.md)，驗收紀錄見 [`BACKEND-VERIFICATION.md`](BACKEND-VERIFICATION.md)。
 
 目前完成項目、P0／P1 狀態、開放問題與後續候選功能，請參閱 [`PROJECT-PROGRESS.md`](PROJECT-PROGRESS.md)。本輪 RDQ 規格卡位於 [`rdq/RDQ-spec-teachergroup-roadmap-20260908.md`](rdq/RDQ-spec-teachergroup-roadmap-20260908.md)；會長已選定 ROADMAP-01、02、03、05、07、08、09、10、11、12，已完成第一階段的靜態網站實作與驗收護欄。
+
+<!-- akai-edu-tools:backlink -->
+
+---
+
+## 🔗 阿凱老師教育工具集
+
+這個專案是[阿凱老師教育工具集](https://cagoooo.github.io/Akai/)的 **#125 桃園市教育產業工會｜石門國小支會會員服務暨活動宣導**，由桃園市龍潭區石門國民小學阿凱老師開發。
+
+- 工具介紹頁：[https://cagoooo.github.io/Akai/tool/125/](https://cagoooo.github.io/Akai/tool/125/)
+- 線上使用：[https://cagoooo.github.io/TeacherGroup2026/](https://cagoooo.github.io/TeacherGroup2026/)
+- 教學情境文章：[https://cagoooo.github.io/Akai/blog/teacher-union-125-membership-service-hub/](https://cagoooo.github.io/Akai/blog/teacher-union-125-membership-service-hub/)
+- 全部工具（上百個教育工具與原始碼）：[https://cagoooo.github.io/Akai/](https://cagoooo.github.io/Akai/)
+
+想改造成自己的版本？到上面的教學情境文章，按左下角「複製 AI 開發提示詞」，貼給 ChatGPT、Claude、Gemini 等 AI 助手，就能參考這份原始碼開始規劃。
